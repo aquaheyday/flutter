@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 
-const List<String> list = <String>['One', 'Two', 'Three', 'Four', 'One', 'Two', 'Three', 'Four'];
+//const List<String> list = <String>['One', 'Two', 'Three', 'Four', 'One', 'Two', 'Three', 'Four'];
 
-class DropdownMenuExample extends StatefulWidget {
-  const DropdownMenuExample({super.key});
+class DropdownMenuWidget extends StatefulWidget {
+  const DropdownMenuWidget({
+    super.key,
+    required this.name,
+    required this.list
+  });
+
+  final TextEditingController name;
+  final List<String> list;
 
   @override
-  State<DropdownMenuExample> createState() => _DropdownMenuExampleState();
+  State<DropdownMenuWidget> createState() => _DropdownMenuWidgetState();
 }
 
-class _DropdownMenuExampleState extends State<DropdownMenuExample> {
-  String dropdownValue = list.first;
-
+class _DropdownMenuWidgetState extends State<DropdownMenuWidget> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+      controller: widget.name,
       width: 320,
       menuHeight: 200,
-      initialSelection: list.first,
+      initialSelection: widget.list.first,
 
       onSelected: (String? value) {
         // This is called when the user selects an item.
         setState(() {
-          dropdownValue = value!;
+          //widget.list.first = value!;
         });
       },
-      dropdownMenuEntries: list.map<DropdownMenuEntry<String>>((String value) {
+      dropdownMenuEntries: widget.list.map<DropdownMenuEntry<String>>((String value) {
         return DropdownMenuEntry<String>(value: value, label: value);
       }).toList(),
     );

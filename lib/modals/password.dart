@@ -8,7 +8,12 @@ import 'package:flutter1/widgets/textFormField.dart';
 
 
 class ListPasswordModal extends StatefulWidget {
-  const ListPasswordModal({super.key});
+  const ListPasswordModal({
+    super.key,
+    required this.id,
+  });
+
+  final int id;
 
   @override
   State<ListPasswordModal> createState() => _ListPasswordModalState();
@@ -20,13 +25,18 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
 
   TextEditingController password = TextEditingController();
 
-  Future<bool> _CallRegister() async {
-    bool success = false;
+  callAPI() async {
+    var response = await http.get(
+      Uri.parse('http://localhost/api/reception/' + widget.id.toString()),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+    );
 
-    if (formKey.currentState!.validate()) {
+    if (response.statusCode == 200) {
+      context.go('/room');
     }
-
-    return success;
   }
 
   @override
@@ -73,7 +83,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
               SizedBox(
                 width: double.infinity,
                 height: 40,
-                child: SubmitWidget(text: '입장 하기', function: _CallRegister),
+                child: SubmitWidget(text: '입장 하기', function: callAPI),
               ),
             ],
           ),

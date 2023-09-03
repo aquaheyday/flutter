@@ -19,51 +19,29 @@ class _ListAddModalState extends State<ListAddModal> {
 
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController name = TextEditingController();
-  TextEditingController email = TextEditingController();
+  TextEditingController type = TextEditingController();
+  TextEditingController title = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController c_password = TextEditingController();
+  List<String> list = ['1', '2'];
 
-  Future<bool> _CallRegister() async {
-    bool success = false;
+  callAPI() async {
+    var response = await http.post(
+      Uri.parse('http://localhost/api/reception'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+      body: jsonEncode({
+        'type': type.text,
+        'title': title.text,
+        'password': password.text,
+      }),
+    );
 
-    if (formKey.currentState!.validate()) {
-      var response = await http.post(
-        Uri.parse('/api/register'),
-        headers: <String, String> {
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode({
-          'name': name.text,
-          'email': email.text,
-          'password': password.text,
-          'c_password': c_password.text,
-        }),
-      );
-      if (response.statusCode == 200) {
-        json.decode(response.body);
-        Map<String, dynamic> map = jsonDecode(response.body);
+    if (response.statusCode == 200) {
 
-        if (map['success']) {
-          window.localStorage['tkn'] = map['data']['token'];
-          context.go('/list');
-        } else {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  actions: [
-                    Text(map['message'] ?? null),
-                  ],
-                );
-              }
-          );
-        }
-        success = map['success'];
-      }
     }
 
-    return success;
   }
 
   @override
@@ -102,9 +80,9 @@ class _ListAddModalState extends State<ListAddModal> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      DropdownMenuExample(),
+                      DropdownMenuWidget(name: type, list: list),
                       SizedBox(height: 10),
-                      TextFormFieldWidget(name: name, label: '제목', validator: 'Please enter your nickname', obscure: false),
+                      TextFormFieldWidget(name: title, label: '제목', validator: 'Please enter your nickname', obscure: false),
                       SizedBox(height: 10),
                       TextFormFieldWidget(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
                     ],
@@ -114,7 +92,7 @@ class _ListAddModalState extends State<ListAddModal> {
               SizedBox(
                 width: double.infinity,
                 height: 40,
-                child: SubmitWidget(text: '생성하기', function: _CallRegister),
+                child: SubmitWidget(text: '생성하기', function: callAPI),
               ),
             ],
           ),

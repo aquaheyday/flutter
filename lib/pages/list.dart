@@ -52,7 +52,6 @@ class List extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-
           onPressed: () {
             showDialog(
                 barrierDismissible: false,
@@ -79,7 +78,9 @@ class tab extends StatefulWidget {
 
 class _tabState extends State<tab> {
   bool loading = false;
-  var data = [];
+  var all = [];
+  var inside = [];
+  var create = [];
 
   callAPI() async {
     var response = await http.get(
@@ -91,9 +92,13 @@ class _tabState extends State<tab> {
     );
 
     if (response.statusCode == 200) {
-     // return response.body;
+
+      setState(() {
+        all = jsonDecode(response.body)['data']['all'];
+        inside = jsonDecode(response.body)['data']['inside'];
+        create = jsonDecode(response.body)['data']['create'];
+      });
     }
-    setState(() => data = jsonDecode(response.body)['data']);
   }
 
   @override
@@ -103,7 +108,6 @@ class _tabState extends State<tab> {
   }
   @override
   Widget build(BuildContext context) {
-    print(data);
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -132,8 +136,8 @@ class _tabState extends State<tab> {
                 Container(
                   //color: Colors.orange,
                   child: ListView.builder(
-                    key: PageStorageKey("LIST_VIEW"),
-                    itemCount: data.length,
+                    key: PageStorageKey("ALL_LIST"),
+                    itemCount: all.length,
                     itemBuilder: (context, index) => Container(
                       height: 100,
                       child: Card(
@@ -143,8 +147,8 @@ class _tabState extends State<tab> {
                               Container(
                                 width: 200,
                                 child: ListTile(
-                                  title: Text('전체 목록 ' + index.toString()),
-                                  subtitle: Text('작성자'),
+                                  title: Text(all[index]['title']),
+                                  subtitle: Text(all[index]['user']['name']),
                                 ),
                               ),
                               Container(
@@ -155,7 +159,7 @@ class _tabState extends State<tab> {
                                           barrierDismissible: false,
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return ListPasswordModal();
+                                            return ListPasswordModal(id: all[index]['id']);
                                           }
                                       );
                                     },
@@ -171,8 +175,8 @@ class _tabState extends State<tab> {
                 Container(
                   //color: Colors.orange,
                   child: ListView.builder(
-                    key: PageStorageKey("bb_VIEW"),
-                    itemCount: 20,
+                    key: PageStorageKey("INSIDE_LIST"),
+                    itemCount: inside.length,
                     itemBuilder: (context, index) => Container(
                       height: 100,
                       child: Card(
@@ -182,8 +186,8 @@ class _tabState extends State<tab> {
                               Container(
                                 width: 200,
                                 child: ListTile(
-                                  title: Text('입장 목록 ' + index.toString()),
-                                  subtitle: Text('작성자'),
+                                  title: Text(inside[index]['reception']['title']),
+                                  subtitle: Text(inside[index]['reception']['user']['name']),
                                 ),
                               ),
                               Container(
@@ -204,8 +208,8 @@ class _tabState extends State<tab> {
                 Container(
                   //color: Colors.orange,
                   child: ListView.builder(
-                    key: PageStorageKey("aa_VIEW"),
-                    itemCount: 20,
+                    key: PageStorageKey("CREATE_LIST"),
+                    itemCount: create.length,
                     itemBuilder: (context, index) => Container(
                       height: 100,
                       child: Card(
@@ -215,8 +219,8 @@ class _tabState extends State<tab> {
                               Container(
                                 width: 200,
                                 child: ListTile(
-                                  title: Text('생성 목록 ' + index.toString()),
-                                  subtitle: Text('작성자'),
+                                  title: Text(create[index]['title']),
+                                  subtitle: Text(create[index]['user']['name']),
                                 ),
                               ),
                               Container(
