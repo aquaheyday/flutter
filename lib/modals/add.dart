@@ -2,10 +2,10 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter1/widgets/submit.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter1/widgets/textFormField.dart';
-import 'package:flutter1/widgets/dropDwon.dart';
+import 'package:flutter1/widgets/text_form_field.dart';
+import 'package:flutter1/widgets/drop_down_menu.dart';
 
 
 class ListAddModal extends StatefulWidget {
@@ -80,19 +80,19 @@ class _ListAddModalState extends State<ListAddModal> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      DropdownMenuWidget(name: type, list: list),
+                      MyDropDownMenu(name: type, list: list),
                       SizedBox(height: 10),
-                      TextFormFieldWidget(name: title, label: '제목', validator: 'Please enter your nickname', obscure: false),
+                      MyTextFormField(name: title, label: '제목', validator: 'Please enter your nickname', obscure: false),
                       SizedBox(height: 10),
-                      TextFormFieldWidget(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
+                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
                     ],
                   ),
                 ),
               ),
               SizedBox(
                 width: double.infinity,
-                height: 40,
-                child: SubmitWidget(text: '생성하기', function: callAPI),
+                height: 50,
+                child: MyIconElevatedButton(text: '생성하기', function: callAPI),
               ),
             ],
           ),

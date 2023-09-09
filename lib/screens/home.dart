@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/modals/register.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/switch.dart';
-import 'package:flutter1/widgets/textFormField.dart';
-import 'package:flutter1/widgets/submit.dart';
+import 'package:flutter1/widgets/text_form_field.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -241,13 +241,13 @@ class _LoginFormState extends State<LoginForm> {
             height: 180,
             child: Column(
               children: [
-                TextFormFieldWidget(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
+                MyTextFormField(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
                 SizedBox(height: 10),
-                TextFormFieldWidget(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
+                MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
                 SizedBox(height: 10),
                 Row(
                   children: [
-                    SwitchWidget(),
+                    MySwitch(),
                     Text(
                       '로그인 상태 유지',
                       textAlign: TextAlign.center,
@@ -264,7 +264,7 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: double.infinity,
             height: 40,
-            child: SubmitWidget(text: '로그인', function: _callAPI),
+            child: MyIconElevatedButton(text: '로그인', function: _callAPI),
           ),
         ],
       ),

@@ -2,9 +2,9 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter1/widgets/submit.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter1/widgets/textFormField.dart';
+import 'package:flutter1/widgets/text_form_field.dart';
 
 
 class RegisterWidget extends StatefulWidget {
@@ -101,13 +101,13 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           ],
                         ),
                         SizedBox(height: 30),
-                        TextFormFieldWidget(name: name, label: '닉네임', validator: 'Please enter your nickname', obscure: false),
+                        MyTextFormField(name: name, label: '닉네임', validator: 'Please enter your nickname', obscure: false),
                         SizedBox(height: 10),
-                        TextFormFieldWidget(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
+                        MyTextFormField(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
                         SizedBox(height: 10),
-                        TextFormFieldWidget(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
+                        MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
                         SizedBox(height: 10),
-                        TextFormFieldWidget(name: c_password, label: '비밀번호확인', validator: 'Please enter your password check', obscure: true),
+                        MyTextFormField(name: c_password, label: '비밀번호확인', validator: 'Please enter your password check', obscure: true),
                       ],
                     ),
                   ),
@@ -115,7 +115,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 SizedBox(
                   width: double.infinity,
                   height: 40,
-                  child: SubmitWidget(text: '가입하기', function: _CallRegister),
+                  child: MyIconElevatedButton(text: '가입하기', function: _CallRegister),
                 ),
               ],
             ),

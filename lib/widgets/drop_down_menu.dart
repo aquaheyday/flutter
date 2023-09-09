@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-//const List<String> list = <String>['One', 'Two', 'Three', 'Four', 'One', 'Two', 'Three', 'Four'];
-
-class DropdownMenuWidget extends StatefulWidget {
-  const DropdownMenuWidget({
+class MyDropDownMenu extends StatefulWidget {
+  const MyDropDownMenu({
     super.key,
     required this.name,
     required this.list
@@ -13,10 +11,10 @@ class DropdownMenuWidget extends StatefulWidget {
   final List<String> list;
 
   @override
-  State<DropdownMenuWidget> createState() => _DropdownMenuWidgetState();
+  State<MyDropDownMenu> createState() => _MyDropDownMenuState();
 }
 
-class _DropdownMenuWidgetState extends State<DropdownMenuWidget> {
+class _MyDropDownMenuState extends State<MyDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
@@ -27,9 +25,9 @@ class _DropdownMenuWidgetState extends State<DropdownMenuWidget> {
 
       onSelected: (String? value) {
         // This is called when the user selects an item.
-        setState(() {
+        /*setState(() {
           //widget.list.first = value!;
-        });
+        });*/
       },
       dropdownMenuEntries: widget.list.map<DropdownMenuEntry<String>>((String value) {
         return DropdownMenuEntry<String>(value: value, label: value);

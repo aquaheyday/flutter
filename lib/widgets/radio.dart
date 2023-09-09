@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RadioButtonWidget extends StatefulWidget {
-  const RadioButtonWidget({
+class MyRadio extends StatefulWidget {
+  const MyRadio({
     super.key,
     required this.name,
     required this.width,
@@ -13,15 +13,16 @@ class RadioButtonWidget extends StatefulWidget {
   final List<String> list;
 
   @override
-  State<RadioButtonWidget> createState() => _RadioButtonWidgetState();
+  State<MyRadio> createState() => _MyRadioState();
 }
 
-class _RadioButtonWidgetState extends State<RadioButtonWidget> {
+class _MyRadioState extends State<MyRadio> {
   late String name = widget.list.first;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (var item in widget.list) SizedBox(
           width: widget.width,

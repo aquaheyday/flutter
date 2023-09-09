@@ -2,9 +2,9 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter1/widgets/submit.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter1/widgets/textFormField.dart';
+import 'package:flutter1/widgets/text_form_field.dart';
 
 
 class ListPasswordModal extends StatefulWidget {
@@ -75,7 +75,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      TextFormFieldWidget(name: password, label: '비밀번호', validator: 'Please enter password', obscure: true),
+                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter password', obscure: true),
                     ],
                   ),
                 ),
@@ -83,7 +83,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
               SizedBox(
                 width: double.infinity,
                 height: 40,
-                child: SubmitWidget(text: '입장 하기', function: callAPI),
+                child: MyIconElevatedButton(text: '입장 하기', function: callAPI),
               ),
             ],
           ),

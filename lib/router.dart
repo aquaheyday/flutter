@@ -1,7 +1,7 @@
-import 'package:flutter1/pages/room.dart';
+import 'package:flutter1/screens//room.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter1/pages/home.dart';
-import 'package:flutter1/pages/list.dart';
+import 'package:flutter1/screens/home.dart';
+import 'package:flutter1/screens/list.dart';
 
 class router {
   final GoRouter MyRouter = GoRouter(

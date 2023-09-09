@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SubmitWidget extends StatefulWidget {
-  const SubmitWidget({
+class MyIconElevatedButton extends StatefulWidget {
+  const MyIconElevatedButton({
     super.key,
     required this.text,
     required this.function,
@@ -11,10 +11,10 @@ class SubmitWidget extends StatefulWidget {
   final Function function;
 
   @override
-  State<SubmitWidget> createState() => _SubmitWidgetState();
+  State<MyIconElevatedButton> createState() => _MyIconElevatedButtonState();
 }
 
-class _SubmitWidgetState extends State<SubmitWidget> {
+class _MyIconElevatedButtonState extends State<MyIconElevatedButton> {
   bool _isLoading = false;
 
   @override

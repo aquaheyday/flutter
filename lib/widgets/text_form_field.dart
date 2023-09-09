@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextFormFieldWidget extends StatefulWidget {
-  const TextFormFieldWidget({
+class MyTextFormField extends StatefulWidget {
+  const MyTextFormField({
     super.key,
     required this.name,
     required this.label,
@@ -15,10 +15,10 @@ class TextFormFieldWidget extends StatefulWidget {
   final bool obscure;
 
   @override
-  State<TextFormFieldWidget> createState() => _TextFormFieldWidgetState();
+  State<MyTextFormField> createState() => _MyTextFormFieldState();
 }
 
-class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
+class _MyTextFormFieldState extends State<MyTextFormField> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
