@@ -95,19 +95,34 @@ class Room extends StatelessWidget {
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return OrderModal();
-              }
-            );
-          },
-          tooltip: '주문 하기',
-          child: Icon(Icons.add),
-        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                print('end');
+              },
+              tooltip: '종료 하기',
+              child: Icon(Icons.close),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return OrderModal();
+                    }
+                );
+              },
+              tooltip: '주문 하기',
+              child: Icon(Icons.add),
+            ),
+          ],
+        )
       ),
     );
   }
