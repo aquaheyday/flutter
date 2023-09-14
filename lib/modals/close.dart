@@ -3,26 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter1/widgets/icon_elevated_button.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter1/widgets/text_form_field.dart';
-import 'package:flutter1/widgets/drop_down_menu.dart';
 
 
-class ListAddModal extends StatefulWidget {
-  const ListAddModal({super.key});
+class ListCloseModal extends StatefulWidget {
+  const ListCloseModal({super.key});
 
   @override
-  State<ListAddModal> createState() => _ListAddModalState();
+  State<ListCloseModal> createState() => _ListCloseModalState();
 }
 
-class _ListAddModalState extends State<ListAddModal> {
+class _ListCloseModalState extends State<ListCloseModal> {
 
   final formKey = GlobalKey<FormState>();
-
-  TextEditingController type = TextEditingController();
-  TextEditingController title = TextEditingController();
-  TextEditingController password = TextEditingController();
-  List<String> list = ['스타벅스', '더카페', '커피쿡'];
 
   callAPI() async {
     var response = await http.post(
@@ -32,9 +24,7 @@ class _ListAddModalState extends State<ListAddModal> {
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
       },
       body: jsonEncode({
-        'type': type.text,
-        'title': title.text,
-        'password': password.text,
+
       }),
     );
 
@@ -51,11 +41,11 @@ class _ListAddModalState extends State<ListAddModal> {
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
           width: 320,
-          height: 320,
+          height: 120,
           child: Column(
             children: [
               SizedBox(
-                height: 250,
+                height: 50,
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   key: formKey,
@@ -65,7 +55,7 @@ class _ListAddModalState extends State<ListAddModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '생성',
+                            '종료',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -79,12 +69,6 @@ class _ListAddModalState extends State<ListAddModal> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 30),
-                      MyDropDownMenu(name: type, list: list),
-                      SizedBox(height: 10),
-                      MyTextFormField(name: title, label: '제목', validator: 'Please enter your nickname', obscure: false),
-                      SizedBox(height: 10),
-                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
                     ],
                   ),
                 ),
@@ -92,7 +76,7 @@ class _ListAddModalState extends State<ListAddModal> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: MyIconElevatedButton(text: '생성하기', function: callAPI),
+                child: MyIconElevatedButton(text: '종료하기', function: callAPI),
               ),
             ],
           ),

@@ -5,6 +5,7 @@ import 'package:flutter1/modals/add.dart';
 import 'package:flutter1/modals/password.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter1/screens/app_bar.dart';
 
 class List extends StatelessWidget {
   const List({super.key});
@@ -12,13 +13,11 @@ class List extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Goseam",
+      title: "고심: 목록",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         //backgroundColor: Colors.grey,
-        appBar: AppBar(
-          title: Text('Goseam'),
-        ),
+        appBar: MyAppBar(),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

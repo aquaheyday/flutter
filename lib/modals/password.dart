@@ -35,7 +35,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
     );
 
     if (response.statusCode == 200) {
-      context.go('/room');
+      context.go('/room?no=' + widget.id.toString());
     }
   }
 

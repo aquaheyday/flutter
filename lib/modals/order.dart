@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/widgets/drop_down_menu.dart';
 import 'package:flutter1/widgets/gesture_button.dart';
 import 'package:flutter1/widgets/icon_elevated_button.dart';
+import 'package:flutter1/widgets/text_form_field.dart';
 
 class OrderModal extends StatefulWidget {
   const OrderModal({super.key});
@@ -18,7 +19,9 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
   final formKey = GlobalKey<FormState>();
 
   TextEditingController menu = TextEditingController();
+  TextEditingController aa = TextEditingController();
   TextEditingController menu2 = TextEditingController();
+  TextEditingController aa2 = TextEditingController();
   late String sizeType = size.first;
   late String menuType = type.first;
 
@@ -45,7 +48,7 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
           width: 320,
-          height: 400,
+          height: 460,
           child: Form(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             key: formKey,
@@ -53,7 +56,7 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: 400,
+                  height: 460,
                   child: TabBarView(
                     controller: _tabController,
                     children: [
@@ -77,6 +80,8 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
                           MyGestureButton(width: 60, list: size, function: test),
                           SizedBox(height: 20),
                           MyDropDownMenu(name: menu, list: list),
+                          SizedBox(height: 20),
+                          MyTextFormField(name: aa, label: '비고', validator: '', obscure: false),
                           SizedBox(height: 50),
                           SizedBox(
                             width: double.infinity,
@@ -122,6 +127,8 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
                           MyGestureButton(width: 60, list: size, function: test),
                           SizedBox(height: 20),
                           MyDropDownMenu(name: menu2, list: list),
+                          SizedBox(height: 20),
+                          MyTextFormField(name: aa2, label: '비고', validator: '', obscure: false),
                           SizedBox(height: 50),
                           SizedBox(
                             width: double.infinity,
