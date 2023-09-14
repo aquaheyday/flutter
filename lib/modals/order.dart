@@ -1,4 +1,7 @@
+import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter1/widgets/drop_down_menu.dart';
 import 'package:flutter1/widgets/gesture_button.dart';
 import 'package:flutter1/widgets/icon_elevated_button.dart';
@@ -28,7 +31,26 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
   late final _tabController = TabController(length: 2, vsync: this);
 
   callAPI() async {
-    print(type);
+    String? para1 = Uri.base.queryParameters["no"];
+
+    var response = await http.post(
+      Uri.parse('http://localhost/api/order/' + para1!),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+      body: jsonEncode({
+        'sizeType': sizeType,
+        'menu': menu.text,
+        'aa': aa.text,
+        'menu2': menu2.text,
+        'aa2': aa2.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+
+    }
   }
 
   test(a) {
