@@ -14,53 +14,13 @@ class Room extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "고심: 방제목",
+      title: "고심",
       home: Scaffold(
         appBar: MyAppBar(),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 700,
-              child: DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                      child: Text(
-                        '방제목 (스타벅스)',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: TabBar(
-                        labelColor: Colors.black,
-                        tabs: [
-                          Tab(
-                            text: '인원별 (10)',
-                          ),
-                          Tab(
-                            text: '메뉴별 (1)',
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Expanded(
-                      child: ViewList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            ViewList(),
             SizedBox(
               width: 30,
             ),
@@ -192,8 +152,10 @@ class ViewList extends StatefulWidget {
 
 class _ViewListState extends State<ViewList> {
   bool loading = false;
-  var all = [];
-  var inside = [];
+  var user = [];
+  var menu = [];
+  var room = [];
+
   String? para1 = Uri.base.queryParameters["no"];
 
   callAPI() async {
@@ -207,10 +169,11 @@ class _ViewListState extends State<ViewList> {
     );
 
     if (response.statusCode == 200) {
-
       setState(() {
-        all = jsonDecode(response.body)['data']['all'];
-        inside = jsonDecode(response.body)['data']['inside'];
+        var decodeBody = utf8.decode(response.bodyBytes);
+        user = jsonDecode(decodeBody)['data']['user'];
+        menu = jsonDecode(decodeBody)['data']['menu'];
+        room = jsonDecode(decodeBody)['data']['room'];
       });
     }
   }
@@ -223,201 +186,273 @@ class _ViewListState extends State<ViewList> {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
-      children: [
-        Container(
-          child: Column(
-            children: [
-              Container(
-                height: 50,
-                child: Card(
-                  color: Colors.blueAccent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 34,
-                      ),
-                      Text(
-                        '사용자',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 170,
-                      ),
-                      Text(
-                        '메인 메뉴',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 230,
-                      ),
-                      Text(
-                        '서브 메뉴',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+    return Container(
+      width: 700,
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+              child: Text(
+                room.length > 0 ? room[0]['title'].toString() + " (" + room[0]['room_type'] + ")" : "",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  key: PageStorageKey("USER_LIST"),
-                  itemCount: 1,
-                  itemBuilder: (context, index) => Container(
-                    height: 100,
-                    child: Card(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+            ),
+            Container(
+              child: TabBar(
+                labelColor: Colors.black,
+                tabs: [
+                  Tab(
+                    text: "인원별 (" + user.length.toString() + ")",
+                  ),
+                  Tab(
+                    text: "메뉴별 (" + menu.length.toString() + ")",
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          child: Card(
+                            color: Colors.blueAccent,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage('assets/dog.png'),
-                                      )
-                                  ),
+                                SizedBox(
+                                  width: 34,
                                 ),
                                 Text(
-                                  '김병준',
+                                  '사용자',
                                   style: TextStyle(
-                                      fontSize: 12
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 170,
+                                ),
+                                Text(
+                                  '메인 메뉴',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 230,
+                                ),
+                                Text(
+                                  '서브 메뉴',
+                                  style: TextStyle(
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Container(
-                            width: 280,
-                            child: ListTile(
-                              title: Text(
-                                '(ice) M 여수 윤슬 헤이즐넛 콜드브루',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                              subtitle: Text(
-                                '덜달게',
-                                style: TextStyle(
-                                  fontSize: 14,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            key: PageStorageKey("USER_LIST"),
+                            itemCount: user.length,
+                            itemBuilder: (context, index) => Container(
+                              height: 100,
+                              child: Card(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(50),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage('assets/dog.png'),
+                                                )
+                                            ),
+                                          ),
+                                          Text(
+                                            user[index]['email'],
+                                            style: TextStyle(
+                                                fontSize: 12
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Container(
+                                      width: 280,
+                                      child: ListTile(
+                                        title: Row(
+                                          children: [
+                                            Text(
+                                              "(" + user[index]['menu_type'].toString() + ")",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              user[index]['menu_size'].toString(),
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              user[index]['menu'].toString(),
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        subtitle: Text(
+                                          '덜달게',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 200,
+                                      child: ListTile(
+                                        title: Row(
+                                          children: [
+                                            Text(
+                                              "(" + user[index]['sub_menu_type'].toString() + ")",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              user[index]['sub_menu_size'].toString(),
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Text(
+                                              user[index]['sub_menu'].toString(),
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: 280,
-                            child: ListTile(
-                              title: Text(
-                                '(ice) M 아메리카노',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-            child: Column(
-              children: [
-                Container(
-                  height: 50,
-                  child: Card(
-                    color: Colors.blueAccent,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 100,
-                        ),
-                        Text(
-                          '메뉴명',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 120,
-                        ),
-                        Text(
-                          '갯수',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 230,
-                        ),
-                        Text(
-                          '인원',
-                          style: TextStyle(
-                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    key: PageStorageKey("MENU_LIST"),
-                    itemCount: 1,
-                    itemBuilder: (context, index) => Container(
-                      height: 100,
-                      child: Card(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 260,
-                              child: ListTile(
-                                title: Text('(ice) M 아메리카노'),
-                                subtitle: Text(''),
+                  Container(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 50,
+                            child: Card(
+                              color: Colors.blueAccent,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 100,
+                                  ),
+                                  Text(
+                                    '메뉴명',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 120,
+                                  ),
+                                  Text(
+                                    '갯수',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 230,
+                                  ),
+                                  Text(
+                                    '인원',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Container(
-                              width: 200,
-                              child: Text('2개'),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              key: PageStorageKey("MENU_LIST"),
+                              itemCount: 1,
+                              itemBuilder: (context, index) => Container(
+                                height: 100,
+                                child: Card(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 260,
+                                        child: ListTile(
+                                          title: Text('(ice) M 아메리카노'),
+                                          subtitle: Text(''),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        child: Text('2개'),
+                                      ),
+                                      Expanded(
+                                          child: Text('김병준')
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            Expanded(
-                                child: Text('김병준')
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
+                        ],
+                      )
                   ),
-                ),
-              ],
-            )
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

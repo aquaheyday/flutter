@@ -26,7 +26,7 @@ class _ListAddModalState extends State<ListAddModal> {
 
   callAPI() async {
     var response = await http.post(
-      Uri.parse('http://localhost/api/reception'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -39,9 +39,8 @@ class _ListAddModalState extends State<ListAddModal> {
     );
 
     if (response.statusCode == 200) {
-
+      context.go('/room?no=' + jsonDecode(response.body)['data']['room_id'].toString());
     }
-
   }
 
   @override

@@ -83,7 +83,7 @@ class _tabState extends State<tab> {
 
   callAPI() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/reception'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -105,6 +105,7 @@ class _tabState extends State<tab> {
     super.initState();
     callAPI();
   }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

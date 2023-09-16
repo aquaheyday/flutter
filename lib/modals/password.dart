@@ -27,7 +27,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
 
   callAPI() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/reception/' + widget.id.toString()),
+      Uri.parse('http://localhost/api/room/' + widget.id.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

@@ -25,9 +25,9 @@ class _MyDropDownMenuState extends State<MyDropDownMenu> {
 
       onSelected: (String? value) {
         // This is called when the user selects an item.
-        /*setState(() {
-          //widget.list.first = value!;
-        });*/
+        setState(() {
+          widget.list.first = value!;
+        });
       },
       dropdownMenuEntries: widget.list.map<DropdownMenuEntry<String>>((String value) {
         return DropdownMenuEntry<String>(value: value, label: value);

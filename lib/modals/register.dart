@@ -28,7 +28,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('/api/register'),
+        Uri.parse('http://localhost/api/register'),
         headers: <String, String> {
           'Content-Type': 'application/json'
         },
@@ -40,8 +40,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         }),
       );
       if (response.statusCode == 200) {
-        json.decode(response.body);
-        Map<String, dynamic> map = jsonDecode(response.body);
+        var decodeBody = utf8.decode(response.bodyBytes);
+
+        Map<String, dynamic> map = jsonDecode(decodeBody);
 
         if (map['success']) {
           window.localStorage['tkn'] = map['data']['token'];

@@ -22,11 +22,13 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
   final formKey = GlobalKey<FormState>();
 
   TextEditingController menu = TextEditingController();
-  TextEditingController aa = TextEditingController();
-  TextEditingController menu2 = TextEditingController();
-  TextEditingController aa2 = TextEditingController();
-  late String sizeType = size.first;
-  late String menuType = type.first;
+  late String menu_type = type.first;
+  late String menu_size = size.first;
+  TextEditingController menu_detail = TextEditingController();
+  TextEditingController sub_menu = TextEditingController();
+  late String sub_menu_type = type.first;
+  late String sub_menu_size = size.first;
+  TextEditingController sub_menu_detail = TextEditingController();
 
   late final _tabController = TabController(length: 2, vsync: this);
 
@@ -34,17 +36,21 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
     String? para1 = Uri.base.queryParameters["no"];
 
     var response = await http.post(
-      Uri.parse('http://localhost/api/order/' + para1!),
+      Uri.parse('http://localhost/api/order/1'),
       headers: <String, String>{
+        'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
       },
       body: jsonEncode({
-        'sizeType': sizeType,
         'menu': menu.text,
-        'aa': aa.text,
-        'menu2': menu2.text,
-        'aa2': aa2.text,
+        'menu_type': menu_type,
+        'menu_size': menu_size,
+        'menu_detail': menu_detail.text,
+        'sub_menu': sub_menu.text,
+        'sub_menu_type': sub_menu_type,
+        'sub_menu_size': sub_menu_size,
+        'sub_menu_detail': sub_menu_detail.text,
       }),
     );
 
@@ -53,15 +59,22 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
     }
   }
 
-  test(a) {
-    sizeType = a;
-    print(sizeType);
+  menuType(value) {
+    menu_type = value;
   }
 
-  test2(a) {
-    menuType = a;
-    print(menuType);
+  menuSize(value) {
+    menu_size = value;
   }
+
+  subMenuType(value) {
+    sub_menu_type = value;
+  }
+
+  subMenuSize(value) {
+    sub_menu_size = value;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +110,13 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
                             ],
                           ),
                           SizedBox(height: 50),
-                          MyGestureButton(width: 150, list: type, function: test2),
+                          MyGestureButton(width: 150, list: type, function: menuType),
                           SizedBox(height: 20),
-                          MyGestureButton(width: 60, list: size, function: test),
+                          MyGestureButton(width: 60, list: size, function: menuSize),
                           SizedBox(height: 20),
                           MyDropDownMenu(name: menu, list: list),
                           SizedBox(height: 20),
-                          MyTextFormField(name: aa, label: '비고', validator: '', obscure: false),
+                          MyTextFormField(name: menu_detail, label: '비고', validator: '', obscure: false),
                           SizedBox(height: 50),
                           SizedBox(
                             width: double.infinity,
@@ -144,13 +157,13 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
                             ],
                           ),
                           SizedBox(height: 50),
-                          MyGestureButton(width: 150, list: type, function: test2),
+                          MyGestureButton(width: 150, list: type, function: subMenuType),
                           SizedBox(height: 20),
-                          MyGestureButton(width: 60, list: size, function: test),
+                          MyGestureButton(width: 60, list: size, function: subMenuSize),
                           SizedBox(height: 20),
-                          MyDropDownMenu(name: menu2, list: list),
+                          MyDropDownMenu(name: sub_menu, list: list),
                           SizedBox(height: 20),
-                          MyTextFormField(name: aa2, label: '비고', validator: '', obscure: false),
+                          MyTextFormField(name: sub_menu_detail, label: '비고', validator: '', obscure: false),
                           SizedBox(height: 50),
                           SizedBox(
                             width: double.infinity,

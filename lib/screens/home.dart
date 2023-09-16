@@ -204,8 +204,8 @@ class _LoginFormState extends State<LoginForm> {
         }),
       );
       if (response.statusCode == 200) {
-        json.decode(response.body);
-        Map<String, dynamic> map = jsonDecode(response.body);
+        var decodeBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> map = jsonDecode(decodeBody);
 
         if (map['success']) {
           window.localStorage['tkn'] = map['data']['token'];
