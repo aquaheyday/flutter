@@ -293,7 +293,7 @@ class _ViewListState extends State<ViewList> {
                                             ),
                                           ),
                                           Text(
-                                            user[index]['email'],
+                                            user[index]['name'],
                                             style: TextStyle(
                                                 fontSize: 12
                                             ),
@@ -310,13 +310,13 @@ class _ViewListState extends State<ViewList> {
                                         title: Row(
                                           children: [
                                             Text(
-                                              "(" + user[index]['menu_type'].toString() + ")",
+                                              "(" + user[index]['menu_type'].toString() + ") ",
                                               style: TextStyle(
                                                 fontSize: 14,
                                               ),
                                             ),
                                             Text(
-                                              user[index]['menu_size'].toString(),
+                                              user[index]['menu_size'].toString() + " ",
                                               style: TextStyle(
                                                 fontSize: 14,
                                               ),
@@ -330,7 +330,7 @@ class _ViewListState extends State<ViewList> {
                                           ],
                                         ),
                                         subtitle: Text(
-                                          '덜달게',
+                                          (user[index]['menu_detail'] ?? '').toString(),
                                           style: TextStyle(
                                             fontSize: 14,
                                           ),
@@ -343,13 +343,13 @@ class _ViewListState extends State<ViewList> {
                                         title: Row(
                                           children: [
                                             Text(
-                                              "(" + user[index]['sub_menu_type'].toString() + ")",
+                                              "(" + user[index]['sub_menu_type'].toString() + ") ",
                                               style: TextStyle(
                                                 fontSize: 14,
                                               ),
                                             ),
                                             Text(
-                                              user[index]['sub_menu_size'].toString(),
+                                              user[index]['sub_menu_size'].toString() + " ",
                                               style: TextStyle(
                                                 fontSize: 14,
                                               ),
@@ -361,6 +361,12 @@ class _ViewListState extends State<ViewList> {
                                               ),
                                             ),
                                           ],
+                                        ),
+                                        subtitle: Text(
+                                          (user[index]['sub_menu_detail'] ?? '').toString(),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -417,7 +423,7 @@ class _ViewListState extends State<ViewList> {
                           Expanded(
                             child: ListView.builder(
                               key: PageStorageKey("MENU_LIST"),
-                              itemCount: 1,
+                              itemCount: menu.length,
                               itemBuilder: (context, index) => Container(
                                 height: 100,
                                 child: Card(
@@ -427,16 +433,37 @@ class _ViewListState extends State<ViewList> {
                                       Container(
                                         width: 260,
                                         child: ListTile(
-                                          title: Text('(ice) M 아메리카노'),
-                                          subtitle: Text(''),
+                                          title: Row(
+                                            children: [
+                                              Text(
+                                                "(" + menu[index]['menu_type'].toString() + ") ",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Text(
+                                                menu[index]['menu_size'].toString() + " ",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Text(
+                                                menu[index]['menu'].toString(),
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          subtitle: Text((menu[index]['menu_detail'] ?? '').toString()),
                                         ),
                                       ),
                                       Container(
                                         width: 200,
-                                        child: Text('2개'),
+                                        child: Text(menu[index]['count'].toString()),
                                       ),
                                       Expanded(
-                                          child: Text('김병준')
+                                          child: Text(menu[index]['name'].toString())
                                       ),
                                     ],
                                   ),

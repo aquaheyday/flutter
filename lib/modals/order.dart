@@ -36,7 +36,7 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
     String? para1 = Uri.base.queryParameters["no"];
 
     var response = await http.post(
-      Uri.parse('http://localhost/api/order/1'),
+      Uri.parse('http://localhost/api/order/' + para1!),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',

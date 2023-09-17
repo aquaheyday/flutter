@@ -186,8 +186,8 @@ class _tabState extends State<tab> {
                               Container(
                                 width: 200,
                                 child: ListTile(
-                                  title: Text(inside[index]['reception']['title']),
-                                  subtitle: Text(inside[index]['reception']['user']['name']),
+                                  title: Text(inside[index]['room']['title']),
+                                  subtitle: Text(inside[index]['room']['user']['name']),
                                 ),
                               ),
                               Container(
