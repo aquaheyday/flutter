@@ -76,7 +76,7 @@ class tab extends StatefulWidget {
 }
 
 class _tabState extends State<tab> {
-  bool loading = false;
+  bool loading = true;
   var all = [];
   var inside = [];
   var create = [];
@@ -96,6 +96,7 @@ class _tabState extends State<tab> {
         all = jsonDecode(response.body)['data']['all'];
         inside = jsonDecode(response.body)['data']['inside'];
         create = jsonDecode(response.body)['data']['create'];
+        loading = false;
       });
     }
   }
@@ -131,115 +132,202 @@ class _tabState extends State<tab> {
             ),
           ),
           Expanded(
-            child: TabBarView(
+            child: Stack(
               children: [
-                Container(
-                  //color: Colors.orange,
-                  child: ListView.builder(
-                    key: PageStorageKey("ALL_LIST"),
-                    itemCount: all.length,
-                    itemBuilder: (context, index) => Container(
-                      height: 100,
-                      child: Card(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 200,
-                                child: ListTile(
-                                  title: Text(all[index]['title']),
-                                  subtitle: Text(all[index]['user']['name']),
-                                ),
-                              ),
-                              Container(
+                if (loading) Center( child: CircularProgressIndicator(),),
+                TabBarView(
+                  children: [
+                    Container(
+                      //color: Colors.orange,
+                      child: ListView.builder(
+                        key: PageStorageKey("ALL_LIST"),
+                        itemCount: all.length,
+                        itemBuilder: (context, index) => Container(
+                          height: 100,
+                          child: Card(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
                                   width: 200,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return ListPasswordModal(id: all[index]['id']);
-                                          }
-                                      );
-                                    },
-                                    child: Text('입장 하기'),
-                                  )
-                              )
-                            ],
-                          )
+                                  child: ListTile(
+                                    title: Text(all[index]['title']),
+                                    subtitle: Text(all[index]['user']['name']),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      height: 40,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return ListPasswordModal(id: all[index]['id'], type: 'in');
+                                            }
+                                          );
+                                        },
+                                        child: Text('입장'),
+                                      ),
+                                    ),
+                                    if (all[index]['creater'] == 1) aa(context, all[index]['id']),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  //color: Colors.orange,
-                  child: ListView.builder(
-                    key: PageStorageKey("INSIDE_LIST"),
-                    itemCount: inside.length,
-                    itemBuilder: (context, index) => Container(
-                      height: 100,
-                      child: Card(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 200,
-                                child: ListTile(
-                                  title: Text(inside[index]['room']['title']),
-                                  subtitle: Text(inside[index]['room']['user']['name']),
-                                ),
-                              ),
-                              Container(
-                                  width: 200,
-                                  child: TextButton(
-                                    onPressed: () {
-
-                                    },
-                                    child: Text('입장 하기'),
+                    Container(
+                      //color: Colors.orange,
+                      child: ListView.builder(
+                        key: PageStorageKey("INSIDE_LIST"),
+                        itemCount: inside.length,
+                        itemBuilder: (context, index) => Container(
+                          height: 100,
+                          child: Card(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    width: 200,
+                                    child: ListTile(
+                                      title: Text(inside[index]['room'] != null ? inside[index]['room']['title'] : ''),
+                                      subtitle: Text(inside[index]['room'] != null ? inside[index]['room']['user']['name'] : ''),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 100,
+                                        height: 40,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return ListPasswordModal(id: inside[index]['id'], type: 'in');
+                                                }
+                                            );
+                                          },
+                                          child: Text('입장'),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 100,
+                                        height: 40,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return ListPasswordModal(id: inside[index]['id'], type: 'out');
+                                                }
+                                            );
+                                          },
+                                          child: Text(
+                                            '삭제',
+                                            style: TextStyle(
+                                                color: Colors.redAccent
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                    ],
                                   )
+                                ],
                               )
-                            ],
-                          )
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  //color: Colors.orange,
-                  child: ListView.builder(
-                    key: PageStorageKey("CREATE_LIST"),
-                    itemCount: create.length,
-                    itemBuilder: (context, index) => Container(
-                      height: 100,
-                      child: Card(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 200,
-                                child: ListTile(
-                                  title: Text(create[index]['title']),
-                                  subtitle: Text(create[index]['user']['name']),
-                                ),
-                              ),
-                              Container(
+                    Container(
+                      //color: Colors.orange,
+                      child: ListView.builder(
+                        key: PageStorageKey("ALL_LIST"),
+                        itemCount: create.length,
+                        itemBuilder: (context, index) => Container(
+                          height: 100,
+                          child: Card(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
                                   width: 200,
-                                  child: TextButton(
-                                    onPressed: () {
-
-                                    },
-                                    child: Text('입장 하기'),
-                                  )
-                              )
-                            ],
-                          )
+                                  child: ListTile(
+                                    title: Text(create[index]['title']),
+                                    subtitle: Text(create[index]['user']['name']),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      height: 40,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ListPasswordModal(id: create[index]['id'], type: 'in');
+                                              }
+                                          );
+                                        },
+                                        child: Text('입장'),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 100,
+                                      height: 40,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ListPasswordModal(id: create[index]['id'], type: 'out');
+                                              }
+                                          );
+                                        },
+                                        child: Text(
+                                          '삭제',
+                                          style: TextStyle(
+                                              color: Colors.redAccent
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
-            ),
+            )
           ),
         ],
       ),
@@ -247,5 +335,28 @@ class _tabState extends State<tab> {
   }
 }
 
+aa(BuildContext context, id){
+  return Container(
+    width: 100,
+    height: 40,
+    child: TextButton(
+      onPressed: () {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return ListPasswordModal(id: id, type: 'out');
+            }
+        );
+      },
+      child: Text(
+        '삭제',
+        style: TextStyle(
+            color: Colors.redAccent
+        ),
+      ),
+    ),
+  );
+}
 
 

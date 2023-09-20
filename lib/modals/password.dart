@@ -11,9 +11,11 @@ class ListPasswordModal extends StatefulWidget {
   const ListPasswordModal({
     super.key,
     required this.id,
+    required this.type,
   });
 
   final int id;
+  final String type;
 
   @override
   State<ListPasswordModal> createState() => _ListPasswordModalState();
@@ -26,16 +28,31 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
   TextEditingController password = TextEditingController();
 
   callAPI() async {
-    var response = await http.get(
-      Uri.parse('http://localhost/api/room/' + widget.id.toString()),
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
-      },
-    );
+    if (widget.type == 'in') {
+      var response = await http.get(
+        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+        },
+      );
 
-    if (response.statusCode == 200) {
-      context.go('/room?no=' + widget.id.toString());
+      if (response.statusCode == 200) {
+        context.go('/room?no=' + widget.id.toString());
+      }
+    } else {
+      var response = await http.delete(
+        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        print('test');
+        context.go('/list');
+      }
     }
   }
 
@@ -46,11 +63,11 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
           width: 320,
-          height: 200,
+          height: widget.type == 'in' ? 200 : 140,
           child: Column(
             children: [
               SizedBox(
-                height: 130,
+                height: widget.type == 'in' ? 130 : 80,
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   key: formKey,
@@ -60,7 +77,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '입장',
+                            widget.type == 'in' ? '입장' : '삭제',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -74,8 +91,8 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 30),
-                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter password', obscure: true),
+                      if (widget.type == 'in') SizedBox(height: 30),
+                      if (widget.type == 'in') MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter password', obscure: true),
                     ],
                   ),
                 ),
@@ -83,7 +100,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
               SizedBox(
                 width: double.infinity,
                 height: 40,
-                child: MyIconElevatedButton(text: '입장 하기', function: callAPI),
+                child: MyIconElevatedButton(text: widget.type == 'in' ? '입장 하기' : '삭제 하기', function: callAPI),
               ),
             ],
           ),

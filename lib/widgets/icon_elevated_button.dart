@@ -22,9 +22,7 @@ class _MyIconElevatedButtonState extends State<MyIconElevatedButton> {
     return ElevatedButton.icon(
       onPressed: _isLoading ? null : () {
         setState(() => _isLoading = true);
-        widget.function().then((bool) {
-          if (!bool) setState(() => _isLoading = false);
-        });
+        widget.function();
       },
       style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
       icon: _isLoading ? Container(
