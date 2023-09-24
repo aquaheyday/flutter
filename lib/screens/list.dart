@@ -223,27 +223,7 @@ class _tabState extends State<tab> {
                                           child: Text('입장'),
                                         ),
                                       ),
-                                      Container(
-                                        width: 100,
-                                        height: 40,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return ListPasswordModal(id: inside[index]['id'], type: 'out');
-                                                }
-                                            );
-                                          },
-                                          child: Text(
-                                            '삭제',
-                                            style: TextStyle(
-                                                color: Colors.redAccent
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                      if (all[index]['creater'] == 1) aa(context, inside[index]['id']),
                                       SizedBox(
                                         width: 20,
                                       ),

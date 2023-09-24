@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +26,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () => print('로그아웃'),
+                  onPressed: () {
+                    window.localStorage.remove('tkn');
+                    context.go('/');
+                  },
                   child: Text(
                     "로그아웃",
                     style: TextStyle(

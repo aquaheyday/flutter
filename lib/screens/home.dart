@@ -32,13 +32,13 @@ class Home extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
-                )
+                ),
                 /*Image(
                   image: AssetImage('assets/aaa.png'),
                   width: 300,
                   height: 100,
                   fit: BoxFit.fill,
-                )*/,
+                )*/
               ),
               Container(
                 width: 400,
@@ -227,6 +227,14 @@ class _LoginFormState extends State<LoginForm> {
     }
 
     return success;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (window.localStorage['tkn'] != null) {
+      context.go('/list');
+    }
   }
 
   @override
