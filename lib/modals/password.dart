@@ -50,8 +50,9 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
       );
 
       if (response.statusCode == 200) {
-        print('test');
-        context.go('/list');
+        setState(() {
+
+        });
       }
     }
   }

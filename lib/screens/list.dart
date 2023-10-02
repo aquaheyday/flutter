@@ -6,6 +6,7 @@ import 'package:flutter1/modals/password.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter1/screens/app_bar.dart';
+import 'package:go_router/go_router.dart';
 
 class List extends StatelessWidget {
   const List({super.key});
@@ -26,7 +27,7 @@ class List extends StatelessWidget {
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Column(
                 children: [
-                  Container(
+                  /*Container(
                     height: 50,
                     child: Row(
                       children: [
@@ -41,7 +42,7 @@ class List extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+                  ),*/
                   Expanded(
                     child: tab(),
                   ),
@@ -72,16 +73,17 @@ class tab extends StatefulWidget {
   const tab({super.key});
 
   @override
-  State<tab> createState() => _tabState();
+  State<tab> createState() => tabState();
 }
 
-class _tabState extends State<tab> {
+class tabState extends State<tab> {
   bool loading = true;
+
   var all = [];
   var inside = [];
   var create = [];
 
-  callAPI() async {
+  _ListApi() async {
     var response = await http.get(
       Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
@@ -101,12 +103,35 @@ class _tabState extends State<tab> {
     }
   }
 
+  _RoomInApi(id) async {
+    var response = await http.get(
+      Uri.parse('http://localhost/api/room/' + id.toString()),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      context.go('/room?no=' + id.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    callAPI();
+    _ListApi();
   }
 
+  ReBuild() {
+    setState(() {
+      all = [];
+      inside = [];
+      create = [];
+      loading = true;
+    });
+    _ListApi();
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -116,7 +141,6 @@ class _tabState extends State<tab> {
           Container(
             margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
             child: TabBar(
-              //indicatorColor: Colors.yellow,
               labelColor: Colors.black,
               tabs: [
                 Tab(
@@ -138,7 +162,6 @@ class _tabState extends State<tab> {
                 TabBarView(
                   children: [
                     Container(
-                      //color: Colors.orange,
                       child: ListView.builder(
                         key: PageStorageKey("ALL_LIST"),
                         itemCount: all.length,
@@ -151,8 +174,8 @@ class _tabState extends State<tab> {
                                 Container(
                                   width: 200,
                                   child: ListTile(
-                                    title: Text(all[index]['title']),
-                                    subtitle: Text(all[index]['user']['name']),
+                                    title: Text((all[index]['end'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
+                                    subtitle: Text(all[index]['name']),
                                   ),
                                 ),
                                 Row(
@@ -163,18 +186,42 @@ class _tabState extends State<tab> {
                                       height: 40,
                                       child: TextButton(
                                         onPressed: () {
-                                          showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return ListPasswordModal(id: all[index]['id'], type: 'in');
-                                            }
-                                          );
+                                          if (all[index]['creater'] == 1 || all[index]['insider'] == 1) {
+                                            _RoomInApi(all[index]['id']);
+                                          } else {
+                                            showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return ListPasswordModal(id: all[index]['id'], type: 'in');
+                                                }
+                                            );
+                                          }
                                         },
                                         child: Text('입장'),
                                       ),
                                     ),
-                                    if (all[index]['creater'] == 1) aa(context, all[index]['id']),
+                                    if (all[index]['creater'] == 1) Container(
+                                      width: 100,
+                                      height: 40,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              barrierDismissible: false,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return DeleteButton(id: all[index]['id'], function: ReBuild);
+                                              }
+                                          );
+                                        },
+                                        child: Text(
+                                          '삭제',
+                                          style: TextStyle(
+                                              color: Colors.redAccent
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     SizedBox(
                                       width: 20,
                                     ),
@@ -187,7 +234,6 @@ class _tabState extends State<tab> {
                       ),
                     ),
                     Container(
-                      //color: Colors.orange,
                       child: ListView.builder(
                         key: PageStorageKey("INSIDE_LIST"),
                         itemCount: inside.length,
@@ -200,8 +246,8 @@ class _tabState extends State<tab> {
                                   Container(
                                     width: 200,
                                     child: ListTile(
-                                      title: Text(inside[index]['room'] != null ? inside[index]['room']['title'] : ''),
-                                      subtitle: Text(inside[index]['room'] != null ? inside[index]['room']['user']['name'] : ''),
+                                      title: Text((inside[index]['end'] == 'Y' ? '(마감) ' : '') + inside[index]['title']),
+                                      subtitle: Text(inside[index]['name']),
                                     ),
                                   ),
                                   Row(
@@ -212,18 +258,32 @@ class _tabState extends State<tab> {
                                         height: 40,
                                         child: TextButton(
                                           onPressed: () {
-                                            showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return ListPasswordModal(id: inside[index]['id'], type: 'in');
-                                                }
-                                            );
+                                            _RoomInApi(inside[index]['id']);
                                           },
                                           child: Text('입장'),
                                         ),
                                       ),
-                                      if (all[index]['creater'] == 1) aa(context, inside[index]['id']),
+                                      if (inside[index]['creater'] == 1) Container(
+                                        width: 100,
+                                        height: 40,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return DeleteButton(id: inside[index]['id'], function: ReBuild);
+                                                }
+                                            );
+                                          },
+                                          child: Text(
+                                            '삭제',
+                                            style: TextStyle(
+                                                color: Colors.redAccent
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       SizedBox(
                                         width: 20,
                                       ),
@@ -236,7 +296,6 @@ class _tabState extends State<tab> {
                       ),
                     ),
                     Container(
-                      //color: Colors.orange,
                       child: ListView.builder(
                         key: PageStorageKey("ALL_LIST"),
                         itemCount: create.length,
@@ -249,8 +308,7 @@ class _tabState extends State<tab> {
                                 Container(
                                   width: 200,
                                   child: ListTile(
-                                    title: Text(create[index]['title']),
-                                    subtitle: Text(create[index]['user']['name']),
+                                    title: Text((create[index]['end'] == 'Y' ? '(마감) ' : '') + create[index]['title']),
                                   ),
                                 ),
                                 Row(
@@ -261,13 +319,7 @@ class _tabState extends State<tab> {
                                       height: 40,
                                       child: TextButton(
                                         onPressed: () {
-                                          showDialog(
-                                              barrierDismissible: false,
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return ListPasswordModal(id: create[index]['id'], type: 'in');
-                                              }
-                                          );
+                                          _RoomInApi(create[index]['id']);
                                         },
                                         child: Text('입장'),
                                       ),
@@ -281,7 +333,7 @@ class _tabState extends State<tab> {
                                               barrierDismissible: false,
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return ListPasswordModal(id: create[index]['id'], type: 'out');
+                                                return DeleteButton(id: create[index]['id'], function: ReBuild);
                                               }
                                           );
                                         },
@@ -315,28 +367,103 @@ class _tabState extends State<tab> {
   }
 }
 
-aa(BuildContext context, id){
-  return Container(
-    width: 100,
-    height: 40,
-    child: TextButton(
-      onPressed: () {
-        showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) {
-              return ListPasswordModal(id: id, type: 'out');
-            }
-        );
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({
+    super.key,
+    required this.id,
+    required this.function,
+  });
+
+  final int id;
+  final Function function;
+
+  @override
+  State<DeleteButton> createState() => _DeleteButtonState();
+}
+
+class _DeleteButtonState extends State<DeleteButton> {
+  bool _isLoading = false;
+
+  RoomDeleteApi(BuildContext context, id) async {
+    await http.delete(
+      Uri.parse('http://localhost/api/room/' + id.toString()),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
       },
-      child: Text(
-        '삭제',
-        style: TextStyle(
-            color: Colors.redAccent
+    );
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.pop(context);
+    widget.function();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+        child: SizedBox(
+          width: 320,
+          height: 140,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 80,
+                child: Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '삭제',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : () {
+                    setState(() => _isLoading = true);
+                    RoomDeleteApi(context, widget.id);
+                  },
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                  icon: _isLoading ? Container(
+                    width: 24,
+                    height: 24,
+                    padding: EdgeInsets.all(2.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  ) : Icon(Icons.check),
+                  label: Text('삭제하기'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 

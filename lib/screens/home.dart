@@ -184,6 +184,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
 
   TextEditingController email = TextEditingController();
@@ -224,6 +225,9 @@ class _LoginFormState extends State<LoginForm> {
         }
         success = map['success'];
       }
+      setState(() {
+        _isLoading = false;
+      });
     }
 
     return success;
@@ -272,7 +276,23 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: double.infinity,
             height: 40,
-            child: MyIconElevatedButton(text: '로그인', function: _callAPI),
+            child: ElevatedButton.icon(
+              onPressed: _isLoading ? null : () {
+                setState(() => _isLoading = true);
+                _callAPI();
+              },
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+              icon: _isLoading ? Container(
+                width: 24,
+                height: 24,
+                padding: EdgeInsets.all(2.0),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 3,
+                ),
+              ) : Icon(Icons.check),
+              label: Text('로그인'),
+            ),
           ),
         ],
       ),
