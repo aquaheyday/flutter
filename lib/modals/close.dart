@@ -24,7 +24,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('http://localhost/api/room/' + widget.no.toString() + '/end'),
+      Uri.parse('https://goseam.com/api/room/' + widget.no.toString() + '/end'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

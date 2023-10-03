@@ -41,7 +41,7 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
 
   callAPI() async {
     var response = await http.post(
-      Uri.parse('http://localhost/api/order/' + widget.no.toString()),
+      Uri.parse('https://goseam.com/api/order/' + widget.no.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
