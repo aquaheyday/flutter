@@ -99,6 +99,8 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 800 ? true : false;
     return AlertDialog(
       content: Container(
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
@@ -131,7 +133,7 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
                             ],
                           ),
                           SizedBox(height: 50),
-                          MyGestureButton(width: 150, list: type, function: menuType),
+                          MyGestureButton(width: isWeb ? 150 : 120, list: type, function: menuType),
                           SizedBox(height: 20),
                           MyGestureButton(width: 60, list: size, function: menuSize),
                           SizedBox(height: 20),

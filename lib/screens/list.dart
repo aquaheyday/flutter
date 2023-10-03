@@ -13,6 +13,9 @@ class List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 800 ? true : false;
+
     return MaterialApp(
       title: "고심: 목록",
       debugShowCheckedModeBanner: false,
@@ -23,7 +26,7 @@ class List extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 800,
+              width: isWeb ? 800 : 400,
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Column(
                 children: [
@@ -143,6 +146,9 @@ class tabState extends State<tab> {
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 800 ? true : false;
+
     return DefaultTabController(
       length: 3,
       child: Column(
@@ -181,7 +187,7 @@ class tabState extends State<tab> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: 200,
+                                  width: isWeb ? 200 : 170,
                                   child: ListTile(
                                     title: Text((all[index]['end'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
                                     subtitle: Text(all[index]['name']),
@@ -253,7 +259,7 @@ class tabState extends State<tab> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: 200,
+                                    width: isWeb ? 200 : 170,
                                     child: ListTile(
                                       title: Text((inside[index]['end'] == 'Y' ? '(마감) ' : '') + inside[index]['title']),
                                       subtitle: Text(inside[index]['name']),
@@ -315,7 +321,7 @@ class tabState extends State<tab> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: 200,
+                                  width: isWeb ? 200 : 170,
                                   child: ListTile(
                                     title: Text((create[index]['end'] == 'Y' ? '(마감) ' : '') + create[index]['title']),
                                   ),

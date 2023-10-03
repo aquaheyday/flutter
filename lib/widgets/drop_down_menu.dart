@@ -17,9 +17,11 @@ class MyDropDownMenu extends StatefulWidget {
 class _MyDropDownMenuState extends State<MyDropDownMenu> {
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 800 ? true : false;
     return DropdownMenu(
       controller: widget.name,
-      width: 320,
+      width: isWeb ? 320 : 250,
       menuHeight: 200,
       initialSelection: widget.list.first,
 
