@@ -8,7 +8,14 @@ import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
 
 class OrderModal extends StatefulWidget {
-  const OrderModal({super.key});
+  const OrderModal({
+    super.key,
+    required this.function,
+    required this.no,
+  });
+
+  final Function function;
+  final String no;
 
   @override
   State<OrderModal> createState() => _OrderModalState();
@@ -33,10 +40,8 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
   late final _tabController = TabController(length: 2, vsync: this);
 
   callAPI() async {
-    String? para1 = Uri.base.queryParameters["no"];
-
     var response = await http.post(
-      Uri.parse('http://localhost/api/order/' + para1!),
+      Uri.parse('http://localhost/api/order/' + widget.no.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -55,7 +60,23 @@ class _OrderModalState extends State<OrderModal> with SingleTickerProviderStateM
     );
 
     if (response.statusCode == 200) {
-
+      var decodeBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> map = jsonDecode(decodeBody);
+      if (map['success']) {
+        Navigator.pop(context);
+        widget.function();
+      } else {
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text(map['message']),
+              );
+            }
+        );
+        widget.function();
+      }
     }
   }
 

@@ -2,7 +2,6 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
 import 'package:flutter1/widgets/drop_down_menu.dart';
@@ -16,7 +15,7 @@ class ListAddModal extends StatefulWidget {
 }
 
 class _ListAddModalState extends State<ListAddModal> {
-
+  bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
 
   TextEditingController type = TextEditingController();
@@ -39,12 +38,32 @@ class _ListAddModalState extends State<ListAddModal> {
     );
 
     if (response.statusCode == 200) {
-      context.go('/room?no=' + jsonDecode(response.body)['data']['room_id'].toString());
+      var decodeBody = utf8.decode(response.bodyBytes);
+      Map<String, dynamic> map = jsonDecode(decodeBody);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (map['success']) {
+        Navigator.pop(context);
+        context.go('/room/' + jsonDecode(response.body)['data']['room_id'].toString());
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text(map['message']),
+              );
+            }
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
       content: Container(
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
@@ -91,7 +110,23 @@ class _ListAddModalState extends State<ListAddModal> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: MyIconElevatedButton(text: '생성하기', function: callAPI),
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : () {
+                    setState(() => _isLoading = true);
+                    callAPI();
+                  },
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                  icon: _isLoading ? Container(
+                    width: 24,
+                    height: 24,
+                    padding: EdgeInsets.all(2.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  ) : Icon(Icons.check),
+                  label: Text('생성하기'),
+                ),
               ),
             ],
           ),

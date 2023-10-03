@@ -1,12 +1,18 @@
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter1/widgets/icon_elevated_button.dart';
 
 
 class ListCloseModal extends StatefulWidget {
-  const ListCloseModal({super.key});
+  const ListCloseModal({
+    super.key,
+    required this.function,
+    required this.no,
+  });
+
+  final Function function;
+  final String no;
 
   @override
   State<ListCloseModal> createState() => _ListCloseModalState();
@@ -17,19 +23,17 @@ class _ListCloseModalState extends State<ListCloseModal> {
   final formKey = GlobalKey<FormState>();
 
   callAPI() async {
-    var response = await http.post(
-      Uri.parse('http://localhost/api/reception'),
+    var response = await http.put(
+      Uri.parse('http://localhost/api/room/' + widget.no.toString() + '/end'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
       },
-      body: jsonEncode({
-
-      }),
     );
 
     if (response.statusCode == 200) {
-
+      Navigator.pop(context);
+      widget.function();
     }
 
   }
@@ -55,7 +59,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '종료',
+                            '마감',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -76,7 +80,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: MyIconElevatedButton(text: '종료하기', function: callAPI),
+                child: MyIconElevatedButton(text: '마감하기', function: callAPI),
               ),
             ],
           ),

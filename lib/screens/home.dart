@@ -5,7 +5,6 @@ import 'package:flutter1/modals/register.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/switch.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
-import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

@@ -15,8 +15,8 @@ class router {
           builder: (context, state) => List(),
         ),
         GoRoute(
-          path: '/room',
-          builder: (context, state) => Room(),
+          path: '/room/:no',
+          builder: (context, state) => Room( no: state.pathParameters['no'].toString()),
         ),
       ]
   );

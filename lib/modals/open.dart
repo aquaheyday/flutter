@@ -1,12 +1,18 @@
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter1/widgets/icon_elevated_button.dart';
 
 
 class ListOpenModal extends StatefulWidget {
-  const ListOpenModal({super.key});
+  const ListOpenModal({
+    super.key,
+    required this.function,
+    required this.no,
+  });
+
+  final Function function;
+  final String no;
 
   @override
   State<ListOpenModal> createState() => _ListOpenModalState();
@@ -17,19 +23,17 @@ class _ListOpenModalState extends State<ListOpenModal> {
   final formKey = GlobalKey<FormState>();
 
   callAPI() async {
-    var response = await http.post(
-      Uri.parse('http://localhost/api/reception'),
+    var response = await http.put(
+      Uri.parse('http://localhost/api/room/' + widget.no.toString() + '/open'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
       },
-      body: jsonEncode({
-
-      }),
     );
 
     if (response.statusCode == 200) {
-
+      Navigator.pop(context);
+      widget.function();
     }
 
   }
