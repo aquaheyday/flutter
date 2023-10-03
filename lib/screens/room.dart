@@ -425,7 +425,7 @@ class _RoomState extends State<Room> {
                         ),
                       ),
                     ),
-                    child: Text('짐캐리'),
+                    child: Text('배달원'),
                   ),
                   SizedBox(
                     height: 10,
