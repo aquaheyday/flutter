@@ -33,7 +33,7 @@ class _MyTextFormFieldState extends State<MyTextFormField> {
         labelText: widget.label,
         errorStyle: TextStyle(
           fontSize: 12,
-          height: 0.3,
+          height: 0.6,
         ),
       ),
       validator: (value) {

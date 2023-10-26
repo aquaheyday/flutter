@@ -7,14 +7,16 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter1/screens/app_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class List extends StatelessWidget {
-  const List({super.key});
+class MyList extends StatelessWidget {
+  const MyList({super.key});
 
   @override
   Widget build(BuildContext context) {
     var pageWidth = MediaQuery.of(context).size.width;
-    var isWeb = pageWidth > 800 ? true : false;
+    var isWeb = pageWidth > 700 ? true : false;
 
     return MaterialApp(
       title: "고심: 목록",
@@ -26,11 +28,11 @@ class List extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: isWeb ? 800 : 400,
+              width: isWeb ? 700 : 400,
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Column(
                 children: [
-                  /*Container(
+                  Container(
                     height: 50,
                     child: Row(
                       children: [
@@ -45,12 +47,45 @@ class List extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),*/
+                  ),
                   Expanded(
                     child: tab(),
                   ),
                 ],
               ),
+            ),
+            SizedBox(width: 20,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 60,
+                ),
+                Container(
+                  width: 300,
+                  padding: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+
+                      ),
+                      /*right: BorderSide(
+                                width: 1,
+                                color: Colors.grey,
+                              ),*/
+                    ),
+                    //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5)),
+                  ),
+                  child: Text('배달원 당첨율'),
+                ),
+                Container(
+                  width: 300,
+                  height: 300,
+                  child: PieChartSample3(),
+                )
+              ],
             ),
           ],
         ),
@@ -90,7 +125,7 @@ class tabState extends State<tab> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -112,7 +147,7 @@ class tabState extends State<tab> {
 
   _RoomInApi(id) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + id.toString()),
+      Uri.parse('http://localhost/api/room/' + id.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -147,7 +182,7 @@ class tabState extends State<tab> {
   @override
   Widget build(BuildContext context) {
     var pageWidth = MediaQuery.of(context).size.width;
-    var isWeb = pageWidth > 800 ? true : false;
+    var isWeb = pageWidth > 700 ? true : false;
 
     return DefaultTabController(
       length: 3,
@@ -401,7 +436,7 @@ class _DeleteButtonState extends State<DeleteButton> {
 
   RoomDeleteApi(BuildContext context, id) async {
     await http.delete(
-      Uri.parse('https://goseam.com/api/room/' + id.toString()),
+      Uri.parse('http://localhost/api/room/' + id.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -501,7 +536,7 @@ class _InButtonState extends State<InButton> {
 
   callAPI(no) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + no.toString()),
+      Uri.parse('http://localhost/api/room/' + no.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -601,5 +636,136 @@ class _InButtonState extends State<InButton> {
   }
 }
 
+class PieChartSample3 extends StatefulWidget {
+  const PieChartSample3({super.key});
 
+  @override
+  State<StatefulWidget> createState() => PieChartSample3State();
+}
 
+class PieChartSample3State extends State {
+  int touchedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1.3,
+      child: AspectRatio(
+        aspectRatio: 1,
+        child: PieChart(
+          PieChartData(
+            pieTouchData: PieTouchData(
+              touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                setState(() {
+                  if (!event.isInterestedForInteractions ||
+                      pieTouchResponse == null ||
+                      pieTouchResponse.touchedSection == null) {
+                    touchedIndex = -1;
+                    return;
+                  }
+                  touchedIndex =
+                      pieTouchResponse.touchedSection!.touchedSectionIndex;
+                });
+              },
+            ),
+            borderData: FlBorderData(
+              show: false,
+            ),
+            sectionsSpace: 0,
+            centerSpaceRadius: 0,
+            sections: showingSections(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<PieChartSectionData> showingSections() {
+    return List.generate(2, (i) {
+      final isTouched = i == touchedIndex;
+      final fontSize = isTouched ? 20.0 : 16.0;
+      final radius = isTouched ? 110.0 : 100.0;
+      final widgetSize = isTouched ? 55.0 : 40.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: Colors.blue,
+            value: 1,
+            title: '10%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgeWidget: _Badge(
+              'assets/icons/ophthalmology-svgrepo-com.svg',
+              size: widgetSize,
+              borderColor: Colors.black,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        case 1:
+          return PieChartSectionData(
+            color: Colors.grey,
+            value: 9,
+            title: '90%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xffffffff),
+              shadows: shadows,
+            ),
+            badgePositionPercentageOffset: .98,
+          );
+        default:
+          throw Exception('Oh no');
+      }
+    });
+  }
+}
+
+class _Badge extends StatelessWidget {
+  const _Badge(
+      this.svgAsset, {
+        required this.size,
+        required this.borderColor,
+      });
+  final String svgAsset;
+  final double size;
+  final Color borderColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: PieChart.defaultDuration,
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: borderColor,
+          width: 2,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(.5),
+            offset: const Offset(3, 3),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(size * .15),
+      child: Center(
+        child: SvgPicture.asset(
+          svgAsset,
+        ),
+      ),
+    );
+  }
+}

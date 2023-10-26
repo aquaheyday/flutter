@@ -12,7 +12,7 @@ class router {
         ),
         GoRoute(
           path: '/list',
-          builder: (context, state) => List(),
+          builder: (context, state) => MyList(),
         ),
         GoRoute(
           path: '/room/:no',

@@ -12,6 +12,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text('Goseam'),
+          SizedBox(width: 50,),
           TextButton(
             onPressed: () => context.go('/list'),
             child: Text(

@@ -23,7 +23,8 @@ class _MyDropDownMenuState extends State<MyDropDownMenu> {
       controller: widget.name,
       width: isWeb ? 320 : 250,
       menuHeight: 200,
-      initialSelection: widget.list.first,
+      initialSelection: '',
+      hintText: '상호명을 입력해 주세요.',
 
       onSelected: (String? value) {
         // This is called when the user selects an item.

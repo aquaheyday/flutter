@@ -75,11 +75,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
             width: 320,
-            height: 390,
+            height: 450,
             child: Column(
               children: [
                 SizedBox(
-                  height: 340,
+                  height: 380,
                   child: Form(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: formKey,
@@ -104,13 +104,13 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           ],
                         ),
                         SizedBox(height: 30),
-                        MyTextFormField(name: name, label: '닉네임', validator: 'Please enter your nickname', obscure: false),
-                        SizedBox(height: 10),
-                        MyTextFormField(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
-                        SizedBox(height: 10),
-                        MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
-                        SizedBox(height: 10),
-                        MyTextFormField(name: c_password, label: '비밀번호확인', validator: 'Please enter your password check', obscure: true),
+                        MyTextFormField(name: name, label: '이름', validator: '이름을 입력해 주세요.', obscure: false),
+                        SizedBox(height: 14),
+                        MyTextFormField(name: email, label: '이메일', validator: '이메일을 입력해 주세요.', obscure: false),
+                        SizedBox(height: 14),
+                        MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
+                        SizedBox(height: 14),
+                        MyTextFormField(name: c_password, label: '비밀번호 확인', validator: '비밀번호 확인을 입력해 주세요.', obscure: true),
                       ],
                     ),
                   ),
@@ -120,8 +120,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                   height: 40,
                   child: ElevatedButton.icon(
                     onPressed: _isLoading ? null : () {
-                      setState(() => _isLoading = true);
-                      _CallRegister();
+                      if (formKey.currentState!.validate()) {
+                        setState(() => _isLoading = true);
+                        _CallRegister();
+                      }
                     },
                     style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
                     icon: _isLoading ? Container(

@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter1/modals/register.dart';
+import 'package:flutter1/modals/find_password.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/switch.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
@@ -32,32 +33,148 @@ class Home extends StatelessWidget {
                     color: Colors.blue,
                   ),
                 ),
-                /*Image(
-                  image: AssetImage('assets/aaa.png'),
-                  width: 300,
-                  height: 100,
-                  fit: BoxFit.fill,
-                )*/
               ),
               Container(
-                width: 400,
-                height: 300,
-                margin: EdgeInsets.all(10.0),
-                padding: EdgeInsets.all(30.0),
+                width: 422,
+                height: 392,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 decoration: BoxDecoration(
                   border: Border.all(
                     color: Colors.grey,
                   ),
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  //borderRadius: BorderRadius.only(topLeft: Radius.zero, topRight: Radius.zero, bottomLeft: Radius.circular(5), bottomRight: Radius.circular(5)),
                 ),
-                child: LoginForm(),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          /*onTap: () {
+                            print('test');
+                          },*/
+                          child: Container(
+                            width: 140,
+                            height: 50,
+                            child: Center(
+                              child: Text('ID 로그인'),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Center(child: Text(
+                                      '준비중 입니다.',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  )
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: 140,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey,
+
+                                ),
+                                left: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                                /*right: BorderSide(
+                                width: 1,
+                                color: Colors.grey,
+                              ),*/
+                              ),
+                              //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5)),
+                            ),
+                            child: Center(
+                              child: Text('로그인 연동'),
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          hoverColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: Center(child: Text(
+                                      '준비중 입니다.',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: 140,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                                bottom: BorderSide(
+                                  width: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text('QR 로그인'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      height: 340,
+                      padding: EdgeInsets.all(30.0),
+                      child: LoginForm(),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
-                      onPressed: () => context.go('/register'),
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return FindPasswordModal();
+                            }
+                        );
+                      },
                       child: Text(
                         '비밀번호찾기',
                         style: TextStyle(
@@ -194,7 +311,7 @@ class _LoginFormState extends State<LoginForm> {
     bool success = false;
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('https://goseam.com/api/login'),
+        Uri.parse('http://localhost/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json'
         },
@@ -249,49 +366,55 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: 180,
+            height: 160,
             child: Column(
               children: [
-                MyTextFormField(name: email, label: '이메일', validator: 'Please enter your e-mail', obscure: false),
-                SizedBox(height: 10),
-                MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    MySwitch(),
-                    Text(
-                      '로그인 상태 유지',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
+                MyTextFormField(name: email, label: '이메일', validator: '이메일을 입력해 주세요.', obscure: false),
+                SizedBox(height: 14),
+                MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
               ],
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: ElevatedButton.icon(
-              onPressed: _isLoading ? null : () {
-                setState(() => _isLoading = true);
-                _callAPI();
-              },
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
-              icon: _isLoading ? Container(
-                width: 24,
-                height: 24,
-                padding: EdgeInsets.all(2.0),
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 3,
+          Column(
+            children: [
+              Row(
+                children: [
+                  MySwitch(),
+                  Text(
+                    '로그인 상태 유지',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4,),
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: ElevatedButton.icon(
+                  onPressed: _isLoading ? null : () {
+                    if (formKey.currentState!.validate()) {
+                      setState(() => _isLoading = true);
+                      _callAPI();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                  icon: _isLoading ? Container(
+                    width: 24,
+                    height: 24,
+                    padding: EdgeInsets.all(2.0),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 3,
+                    ),
+                  ) : Icon(Icons.check),
+                  label: Text('로그인'),
                 ),
-              ) : Icon(Icons.check),
-              label: Text('로그인'),
-            ),
+              )
+            ],
           ),
         ],
       ),
