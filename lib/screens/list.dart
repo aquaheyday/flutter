@@ -125,7 +125,7 @@ class tabState extends State<tab> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room'),
+      Uri.parse('https://goseam.com/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -147,7 +147,7 @@ class tabState extends State<tab> {
 
   _RoomInApi(id) async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/' + id.toString()),
+      Uri.parse('http://goseam.com/api/room/' + id.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -436,7 +436,7 @@ class _DeleteButtonState extends State<DeleteButton> {
 
   RoomDeleteApi(BuildContext context, id) async {
     await http.delete(
-      Uri.parse('http://localhost/api/room/' + id.toString()),
+      Uri.parse('http://goseam.com/api/room/' + id.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -536,7 +536,7 @@ class _InButtonState extends State<InButton> {
 
   callAPI(no) async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/' + no.toString()),
+      Uri.parse('http://goseam.com/api/room/' + no.toString()),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

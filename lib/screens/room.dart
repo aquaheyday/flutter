@@ -32,7 +32,7 @@ class _RoomState extends State<Room> {
   callAPI(no) async {
     if (no != '') {
       var response = await http.get(
-        Uri.parse('http://localhost/api/order/' + no),
+        Uri.parse('http://goseam.com/api/order/' + no),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
