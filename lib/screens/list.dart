@@ -573,11 +573,11 @@ class _InButtonState extends State<InButton> {
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
           width: 320,
-          height: 200,
+          height: 220,
           child: Column(
             children: [
               SizedBox(
-                height: 130,
+                height: 150,
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   key: formKey,
@@ -602,7 +602,7 @@ class _InButtonState extends State<InButton> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter password', obscure: true),
+                      MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
                     ],
                   ),
                 ),
@@ -612,8 +612,10 @@ class _InButtonState extends State<InButton> {
                 height: 40,
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : () {
-                    setState(() => _isLoading = true);
-                    callAPI(widget.no);
+                    if (formKey.currentState!.validate()) {
+                      setState(() => _isLoading = true);
+                      callAPI(widget.no);
+                    }
                   },
                   style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
                   icon: _isLoading ? Container(
@@ -702,7 +704,7 @@ class PieChartSample3State extends State {
               shadows: shadows,
             ),
             badgeWidget: _Badge(
-              'assets/icons/ophthalmology-svgrepo-com.svg',
+              'assets/dog.png',
               size: widgetSize,
               borderColor: Colors.black,
             ),
@@ -762,8 +764,11 @@ class _Badge extends StatelessWidget {
       ),
       padding: EdgeInsets.all(size * .15),
       child: Center(
-        child: SvgPicture.asset(
-          svgAsset,
+        child: Text(
+          '작업중',
+          style: TextStyle(
+              fontSize: 12
+          ),
         ),
       ),
     );

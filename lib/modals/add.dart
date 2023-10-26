@@ -69,11 +69,11 @@ class _ListAddModalState extends State<ListAddModal> {
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
           width: 320,
-          height: 320,
+          height: 380,
           child: Column(
             children: [
               SizedBox(
-                height: 250,
+                height: 300,
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   key: formKey,
@@ -100,9 +100,9 @@ class _ListAddModalState extends State<ListAddModal> {
                       SizedBox(height: 30),
                       MyDropDownMenu(name: type, list: list),
                       SizedBox(height: 10),
-                      MyTextFormField(name: title, label: '제목', validator: 'Please enter your nickname', obscure: false),
+                      MyTextFormField(name: title, label: '제목', validator: '제목을 입력해 주세요.', obscure: false),
                       SizedBox(height: 10),
-                      MyTextFormField(name: password, label: '비밀번호', validator: 'Please enter your password', obscure: true),
+                      MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
                     ],
                   ),
                 ),
@@ -112,8 +112,10 @@ class _ListAddModalState extends State<ListAddModal> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : () {
-                    setState(() => _isLoading = true);
-                    callAPI();
+                    if (formKey.currentState!.validate()) {
+                      setState(() => _isLoading = true);
+                      callAPI();
+                    }
                   },
                   style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
                   icon: _isLoading ? Container(
