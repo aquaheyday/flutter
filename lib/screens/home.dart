@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
               ),
               Container(
                 width: 422,
-                height: 392,
+                height: 352,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -154,8 +154,12 @@ class Home extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      height: 340,
-                      padding: EdgeInsets.all(30.0),
+                      height: 300,
+                      padding: EdgeInsets.only(
+                        left: 30,
+                        right: 30,
+                        top: 10,
+                      ),
                       child: LoginForm(),
                     ),
                   ],
@@ -179,8 +183,23 @@ class Home extends StatelessWidget {
                         '비밀번호찾기',
                         style: TextStyle(
                           fontSize: 12,
-                          decoration: TextDecoration.underline,
                           color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 10,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+
+                          ),
+                          left: BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ),
@@ -198,7 +217,6 @@ class Home extends StatelessWidget {
                         '회원가입',
                         style: TextStyle(
                           fontSize: 12,
-                          decoration: TextDecoration.underline,
                           color: Colors.black,
                         ),
                       ),
@@ -206,7 +224,22 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox( height: 140),
+              SizedBox( height: 40),
+              Container(
+                width: 420,
+                height: 140,
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    '광고 구역 입니다.',
+                    style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox( height: 40),
               Column(
                 children: [
                   Row(
