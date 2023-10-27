@@ -16,6 +16,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'Pretendard'),
       title: "고심: 로그인",
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -61,7 +62,7 @@ class Home extends StatelessWidget {
                             width: 140,
                             height: 50,
                             child: Center(
-                              child: Text('ID 로그인'),
+                              child: Text('ID 로그인',),
                             ),
                           ),
                         ),
@@ -444,7 +445,13 @@ class _LoginFormState extends State<LoginForm> {
                       strokeWidth: 3,
                     ),
                   ) : Icon(Icons.check),
-                  label: Text('로그인'),
+                  label: Text(
+                    '로그인',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               )
             ],
