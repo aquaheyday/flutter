@@ -81,6 +81,7 @@ class _RoomState extends State<Room> {
     var isWeb = pageWidth > 800 ? true : false;
 
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'Pretendard'),
       title: "고심",
       home: Scaffold(
         appBar: MyAppBar(),

@@ -277,7 +277,22 @@ class Home extends StatelessWidget {
                           );
                         },
                       ),
-                      Text('|'),
+                      Container(
+                        height: 10,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+
+                            ),
+                            left: BorderSide(
+                              width: 1,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
                       TextButton(
                         child: Text(
                           '개인정보처리방침',

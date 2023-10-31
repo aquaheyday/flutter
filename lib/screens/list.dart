@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:flutter1/screens/app_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MyList extends StatelessWidget {
   const MyList({super.key});
@@ -20,9 +19,11 @@ class MyList extends StatelessWidget {
 
     return MaterialApp(
       title: "고심: 목록",
+      theme: ThemeData(
+          fontFamily: 'Pretendard'
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        //backgroundColor: Colors.grey,
         appBar: MyAppBar(),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,17 +50,33 @@ class MyList extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    child: tab(),
+                    child: MyMainList(),
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 20,),
+            SizedBox(width: 40,),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 60,
+                SizedBox(height: 82),
+                Container(
+                  width: 300,
+                  padding: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  child: Text('배달원 당첨율'),
+                ),
+                Container(
+                  width: 300,
+                  height: 320,
+                  child: MyPieChart(),
                 ),
                 Container(
                   width: 300,
@@ -69,22 +86,16 @@ class MyList extends StatelessWidget {
                       bottom: BorderSide(
                         width: 1,
                         color: Colors.grey,
-
                       ),
-                      /*right: BorderSide(
-                                width: 1,
-                                color: Colors.grey,
-                              ),*/
                     ),
-                    //borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5)),
                   ),
-                  child: Text('배달원 당첨율'),
+                  child: Text('Top 10'),
                 ),
                 Container(
                   width: 300,
                   height: 300,
-                  child: PieChartSample3(),
-                )
+                  child: MyTopList(),
+                ),
               ],
             ),
           ],
@@ -92,11 +103,11 @@ class MyList extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return ListAddModal();
-                }
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return ListAddModal();
+              }
             );
           },
           tooltip: '생성 하기',
@@ -107,14 +118,14 @@ class MyList extends StatelessWidget {
   }
 }
 
-class tab extends StatefulWidget {
-  const tab({super.key});
+class MyMainList extends StatefulWidget {
+  const MyMainList({super.key});
 
   @override
-  State<tab> createState() => tabState();
+  State<MyMainList> createState() => MyMainListState();
 }
 
-class tabState extends State<tab> {
+class MyMainListState extends State<MyMainList> {
   bool loading = true;
 
   var all = [];
@@ -399,7 +410,7 @@ class tabState extends State<tab> {
                                       width: 20,
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             )
                           ),
@@ -409,7 +420,7 @@ class tabState extends State<tab> {
                   ],
                 ),
               ],
-            )
+            ),
           ),
         ],
       ),
@@ -638,96 +649,231 @@ class _InButtonState extends State<InButton> {
   }
 }
 
-class PieChartSample3 extends StatefulWidget {
-  const PieChartSample3({super.key});
+class MyPieChart extends StatefulWidget {
+  const MyPieChart({super.key});
 
   @override
-  State<StatefulWidget> createState() => PieChartSample3State();
+  State<StatefulWidget> createState() => MyPieChartState();
 }
 
-class PieChartSample3State extends State {
+class MyPieChartState extends State {
   int touchedIndex = 0;
+
+  bool loading = true;
+
+  double userRate = 0;
+  double totalRate = 0;
+  int allCount = 0;
+  int pickUpCount = 0;
+
+  _aApi() async {
+    var response = await http.get(
+      Uri.parse('https://goseam.com/api/room/chart'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        var decodeBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> map = jsonDecode(decodeBody);
+        userRate = map['data']['userRate'];
+        totalRate = map['data']['totalRate'];
+        allCount = map['data']['allCount'];
+        pickUpCount = map['data']['pickUpCount'];
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _aApi();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: PieChart(
-          PieChartData(
-            pieTouchData: PieTouchData(
-              touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                setState(() {
-                  if (!event.isInterestedForInteractions ||
-                      pieTouchResponse == null ||
-                      pieTouchResponse.touchedSection == null) {
-                    touchedIndex = -1;
-                    return;
-                  }
-                  touchedIndex =
-                      pieTouchResponse.touchedSection!.touchedSectionIndex;
-                });
-              },
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Container(
+            child: TabBar(
+              labelColor: Colors.black,
+              tabs: [
+                Tab(
+                  text: '내정보',
+                ),
+                Tab(
+                  text: '전체',
+                ),
+              ],
             ),
-            borderData: FlBorderData(
-              show: false,
-            ),
-            sectionsSpace: 0,
-            centerSpaceRadius: 0,
-            sections: showingSections(),
           ),
-        ),
+          Expanded(
+            child: Stack(
+              children: [
+                TabBarView(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1.3,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                setState(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    touchedIndex = -1;
+                                    return;
+                                  }
+                                  touchedIndex =
+                                      pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                });
+                              },
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 0,
+                            sections: List.generate(2, (i) {
+                              final isTouched = i == touchedIndex;
+                              final fontSize = isTouched ? 20.0 : 16.0;
+                              final radius = isTouched ? 110.0 : 100.0;
+                              final widgetSize = isTouched ? 55.0 : 40.0;
+                              const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+                              switch (i) {
+                                case 0:
+                                  return PieChartSectionData(
+                                    color: Colors.blue,
+                                    value: userRate,
+                                    title: userRate.toString() + '%' + allCount.toString(),
+                                    radius: radius,
+                                    titleStyle: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xffffffff),
+                                      shadows: shadows,
+                                    ),
+                                    badgeWidget: _Badge(
+                                      'assets/dog.png',
+                                      size: widgetSize,
+                                      borderColor: Colors.black,
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  );
+                                case 1:
+                                  return PieChartSectionData(
+                                    color: Colors.grey,
+                                    value: (100 - userRate),
+                                    title: (100 - userRate).toString() + '%',
+                                    radius: radius,
+                                    titleStyle: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xffffffff),
+                                      shadows: shadows,
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  );
+                                default:
+                                  throw Exception('Oh no');
+                              }
+                            }),
+                          ),
+                        ),
+                      ),
+                    ),
+                    AspectRatio(
+                      aspectRatio: 1.3,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                                setState(() {
+                                  if (!event.isInterestedForInteractions ||
+                                      pieTouchResponse == null ||
+                                      pieTouchResponse.touchedSection == null) {
+                                    touchedIndex = -1;
+                                    return;
+                                  }
+                                  touchedIndex =
+                                      pieTouchResponse.touchedSection!.touchedSectionIndex;
+                                });
+                              },
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 0,
+                            sections: List.generate(2, (i) {
+                              final isTouched = i == touchedIndex;
+                              final fontSize = isTouched ? 20.0 : 16.0;
+                              final radius = isTouched ? 110.0 : 100.0;
+                              final widgetSize = isTouched ? 55.0 : 40.0;
+                              const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+
+                              switch (i) {
+                                case 0:
+                                  return PieChartSectionData(
+                                    color: Colors.blue,
+                                    value: totalRate,
+                                    title: totalRate.toString() + '%',
+                                    radius: radius,
+                                    titleStyle: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xffffffff),
+                                      shadows: shadows,
+                                    ),
+                                    badgeWidget: _Badge(
+                                      'assets/dog.png',
+                                      size: widgetSize,
+                                      borderColor: Colors.black,
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  );
+                                case 1:
+                                  return PieChartSectionData(
+                                    color: Colors.grey,
+                                    value: 100 - totalRate,
+                                    title: (100 - totalRate).toString() + '%',
+                                    radius: radius,
+                                    titleStyle: TextStyle(
+                                      fontSize: fontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color(0xffffffff),
+                                      shadows: shadows,
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  );
+                                default:
+                                  throw Exception('Oh no');
+                              }
+                            }),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(2, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 110.0 : 100.0;
-      final widgetSize = isTouched ? 55.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: Colors.blue,
-            value: 1,
-            title: '10%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/dog.png',
-              size: widgetSize,
-              borderColor: Colors.black,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 1:
-          return PieChartSectionData(
-            color: Colors.grey,
-            value: 9,
-            title: '90%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        default:
-          throw Exception('Oh no');
-      }
-    });
   }
 }
 
@@ -765,11 +911,133 @@ class _Badge extends StatelessWidget {
       padding: EdgeInsets.all(size * .15),
       child: Center(
         child: Text(
-          '작업중',
+          '당첨',
           style: TextStyle(
               fontSize: 12
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyTopList extends StatefulWidget {
+  const MyTopList({super.key});
+
+  @override
+  State<MyTopList> createState() => _MyTopListState();
+}
+
+class _MyTopListState extends State<MyTopList> {
+  int touchedIndex = 0;
+
+  bool loading = true;
+
+  var menu = [];
+  var email = [];
+
+  _ListApi() async {
+    var response = await http.get(
+      Uri.parse('https://goseam.com/api/room/top'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        var decodeBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> map = jsonDecode(decodeBody);
+        menu = map['data']['menu'];
+        email = map['data']['email'];
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _ListApi();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          Container(
+            //margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: TabBar(
+              labelColor: Colors.black,
+              tabs: [
+                Tab(
+                  text: '배달원',
+                ),
+                Tab(
+                  text: '메뉴',
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Stack(
+              children: [
+                if (loading) Center( child: CircularProgressIndicator(),),
+                TabBarView(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 6),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: email.length,
+                            itemBuilder: (context, index) => Container(
+                              height: 30,
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text((index + 1).toString() + '. ' + email[index]['name']),
+                                  Text(email[index]['cnt'].toString() + '회'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 6),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: menu.length,
+                            itemBuilder: (context, index) => Container(
+                              height: 30,
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text((index + 1).toString() + '. ' + menu[index]['menu']),
+                                  Text(menu[index]['cnt'].toString() + '번'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
