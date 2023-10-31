@@ -82,10 +82,10 @@ class _RoomState extends State<Room> {
 
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Pretendard'),
-      title: "고심",
+      title: "고심" + (room.length > 0 ? ": " + room[0]['title'].toString() : ""),
       home: Scaffold(
         appBar: MyAppBar(),
-        body: isWeb ? Row(
+        body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
@@ -101,15 +101,32 @@ class _RoomState extends State<Room> {
                       child: CircularProgressIndicator(),
                     )
                     else Container(
-                      width: double.infinity,
                       margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                      child: Text(
-                        room.length > 0 ? room[0]['title'].toString() + " (" + room[0]['room_type'] + ")" : "",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              room.length > 0 ? room[0]['title'].toString() : "",
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              room.length > 0 ? room[0]['room_type'] : "",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                        ],
                       ),
                     ),
                     Container(
@@ -125,9 +142,7 @@ class _RoomState extends State<Room> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    SizedBox(height: 20),
                     Expanded(
                       child: TabBarView(
                         children: [
@@ -141,27 +156,21 @@ class _RoomState extends State<Room> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          width: 56,
-                                        ),
+                                        SizedBox(width: 46),
                                         Text(
                                           '사용자',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 140,
-                                        ),
+                                        SizedBox(width: 110),
                                         Text(
                                           '메인 메뉴',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 250,
-                                        ),
+                                        SizedBox(width: 230),
                                         Text(
                                           '서브 메뉴',
                                           style: TextStyle(
@@ -185,12 +194,11 @@ class _RoomState extends State<Room> {
                                         height: 100,
                                         child: Card(
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
-                                              SizedBox(
-                                                width: 20,
-                                              ),
+                                              SizedBox(width: 10),
                                               Container(
+                                                width: 100,
                                                 child: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: [
@@ -198,34 +206,33 @@ class _RoomState extends State<Room> {
                                                       width: 50,
                                                       height: 50,
                                                       decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(50),
-                                                          image: DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image: AssetImage('assets/dog.png'),
-                                                          )
+                                                        borderRadius: BorderRadius.circular(50),
+                                                        image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: AssetImage('assets/dog.png'),
+                                                        ),
                                                       ),
                                                     ),
+                                                    SizedBox(height: 4),
                                                     if (user[index]['pickup'] == 'Y') Text(
-                                                      '(당첨) ' + user[index]['name'],
+                                                      user[index]['name'] + "★",
                                                       style: TextStyle(
-                                                        fontSize: 12,
+                                                        fontSize: 14,
                                                         color: Colors.blue,
                                                       ),
                                                     )
                                                     else Text(
                                                       user[index]['name'],
                                                       style: TextStyle(
-                                                        fontSize: 12,
+                                                        fontSize: 14,
                                                       ),
                                                     )
                                                   ],
                                                 ),
                                               ),
-                                              SizedBox(
-                                                width: 30,
-                                              ),
+                                              SizedBox(width: 30),
                                               Container(
-                                                width: 280,
+                                                width: 250,
                                                 child: ListTile(
                                                   title: Row(
                                                     children: [
@@ -257,8 +264,9 @@ class _RoomState extends State<Room> {
                                                   ),
                                                 ),
                                               ),
+                                              SizedBox(width: 30),
                                               Container(
-                                                width: 200,
+                                                width: 196,
                                                 child: ListTile(
                                                   title: Row(
                                                     children: [
@@ -290,6 +298,21 @@ class _RoomState extends State<Room> {
                                                   ),
                                                 ),
                                               ),
+                                              if (end == 'N' && user[index]['creater'] == 1) Container(
+                                                width: 40,
+                                                height: 40,
+                                                margin: EdgeInsets.only(left: 10, right: 10),
+                                                child: IconButton(
+                                                  padding: EdgeInsets.zero,
+                                                  constraints: BoxConstraints(),
+                                                  onPressed: () => print('test'),
+                                                  tooltip: '삭제',
+                                                  icon: Icon(
+                                                    Icons.close,
+                                                    color: Colors.redAccent,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -309,27 +332,21 @@ class _RoomState extends State<Room> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          width: 100,
-                                        ),
+                                        SizedBox(width: 100),
                                         Text(
                                           '메뉴명',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 120,
-                                        ),
+                                        SizedBox(width: 134),
                                         Text(
                                           '갯수',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 230,
-                                        ),
+                                        SizedBox(width: 200),
                                         Text(
                                           '인원',
                                           style: TextStyle(
@@ -345,58 +362,59 @@ class _RoomState extends State<Room> {
                                   child: CircularProgressIndicator(),
                                 )
                                 else
-                                Expanded(
-                                  child: ListView.builder(
-                                    key: PageStorageKey("MENU_LIST"),
-                                    itemCount: menu.length,
-                                    itemBuilder: (context, index) => Container(
-                                      height: 100,
-                                      child: Card(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              width: 260,
-                                              child: ListTile(
-                                                title: Row(
-                                                  children: [
-                                                    Text(
-                                                      "(" + menu[index]['menu_type'].toString() + ") ",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
+                                  Expanded(
+                                    child: ListView.builder(
+                                      key: PageStorageKey("MENU_LIST"),
+                                      itemCount: menu.length,
+                                      itemBuilder: (context, index) => Container(
+                                        height: 100,
+                                        child: Card(
+                                          child: Row(
+                                            children: [
+                                              SizedBox(width: 10),
+                                              Container(
+                                                width: 260,
+                                                child: ListTile(
+                                                  title: Row(
+                                                    children: [
+                                                      Text(
+                                                        "(" + menu[index]['menu_type'].toString() + ") ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      menu[index]['menu_size'].toString() + " ",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
+                                                      Text(
+                                                        menu[index]['menu_size'].toString() + " ",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      menu[index]['menu'].toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
+                                                      Text(
+                                                        menu[index]['menu'].toString(),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
+                                                  subtitle: Text((menu[index]['menu_detail'] ?? '').toString()),
                                                 ),
-                                                subtitle: Text((menu[index]['menu_detail'] ?? '').toString()),
                                               ),
-                                            ),
-                                            SizedBox(width: 6,),
-                                            Container(
-                                              width: 200,
-                                              child: Text(menu[index]['count'].toString()),
-                                            ),
-                                            Expanded(
-                                                child: Text(menu[index]['name'].toString())
-                                            ),
-                                          ],
+                                              SizedBox(width: 6),
+                                              Container(
+                                                width: 120,
+                                                child: Text(menu[index]['count'].toString()),
+                                              ),
+                                              Container(
+                                                width: 260,
+                                                child: Text(menu[index]['name'].toString()),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ),
@@ -407,16 +425,14 @@ class _RoomState extends State<Room> {
                 ),
               ),
             ),
-            SizedBox(
-              width: 30,
-            ),
+            SizedBox(width: 30),
             Container(
               width: 280,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 80,
+                    height: 140,
                   ),
                   Container(
                     width: double.infinity,
@@ -424,8 +440,8 @@ class _RoomState extends State<Room> {
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          width: 1.0,
-                          color: Colors.blueAccent,
+                          width: 1,
+                          color: Colors.grey,
                         ),
                       ),
                     ),
@@ -439,359 +455,45 @@ class _RoomState extends State<Room> {
                     child: CircularProgressIndicator(),
                   ) else
                     if (end == 'Y')
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Wrap(
-                        children: [
-                          for (int i = 0; i < user.length; i++)
-                            if (user[i]['pickup'] == 'Y')
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 50,
-                                    height: 50,
-                                    margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage('assets/dog.png'),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Wrap(
+                          children: [
+                            for (int i = 0; i < user.length; i++)
+                              if (user[i]['pickup'] == 'Y')
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(0, 4, 10, 0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(50),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage('assets/dog.png'),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        user[i]['name'],
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    user[i]['name'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                        ],
+                                ),
+                          ],
+                        ),
                       ),
-                    ),
                 ],
               ),
             ),
           ],
-        )
-        : Center(
-          child: Container(
-            width: 400,
-            child: DefaultTabController(
-              length: 2,
-              child: Column(
-                children: [
-                  if (loading) Container(
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                    height: 26,
-                    width: 26,
-                    child: CircularProgressIndicator(),
-                  )
-                  else Container(
-                    width: double.infinity,
-                    margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                    child: Text(
-                      room.length > 0 ? room[0]['title'].toString() + " (" + room[0]['room_type'] + ")" : "",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: TabBar(
-                      labelColor: Colors.black,
-                      tabs: [
-                        Tab(
-                          text: "인원별 (" + user.length.toString() + ")",
-                        ),
-                        Tab(
-                          text: "메뉴별 (" + menu.length.toString() + ")",
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      children: [
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 50,
-                                child: Card(
-                                  color: Colors.blueAccent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 30,
-                                      ),
-                                      Text(
-                                        '사용자',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 140,
-                                      ),
-                                      Text(
-                                        '메뉴',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              if (loading) Container(
-                                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                                child: CircularProgressIndicator(),
-                              )
-                              else
-                                Expanded(
-                                  child: ListView.builder(
-                                    key: PageStorageKey("USER_LIST"),
-                                    itemCount: user.length,
-                                    itemBuilder: (context, index) => Container(
-                                      height: 120,
-                                      child: Card(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                              width: 20,
-                                            ),
-                                            Container(
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(50),
-                                                        image: DecorationImage(
-                                                          fit: BoxFit.cover,
-                                                          image: AssetImage('assets/dog.png'),
-                                                        )
-                                                    ),
-                                                  ),
-                                                  if (user[index]['pickup'] == 'Y') Text(
-                                                    '(당첨) ' + user[index]['name'],
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: Colors.blue,
-                                                    ),
-                                                  )
-                                                  else Text(
-                                                    user[index]['name'],
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 30,
-                                            ),
-                                            Column(
-                                              children: [
-                                                Container(
-                                                  width: 280,
-                                                  height: 50,
-                                                  child: ListTile(
-                                                    title: Row(
-                                                      children: [
-                                                        Text(
-                                                          "메인 : "
-                                                        ),
-                                                        Text(
-                                                          "(" + user[index]['menu_type'].toString() + ") ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          user[index]['menu_size'].toString() + " ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          user[index]['menu'].toString(),
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    subtitle: Text(
-                                                      (user[index]['menu_detail'] ?? '').toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 280,
-                                                  height: 50,
-                                                  child: ListTile(
-                                                    title: Row(
-                                                      children: [
-                                                        Text(
-                                                            "서브 : "
-                                                        ),
-                                                        Text(
-                                                          "(" + user[index]['sub_menu_type'].toString() + ") ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          user[index]['sub_menu_size'].toString() + " ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          user[index]['sub_menu'].toString(),
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    subtitle: Text(
-                                                      (user[index]['sub_menu_detail'] ?? '').toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 50,
-                                child: Card(
-                                  color: Colors.blueAccent,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: 100,
-                                      ),
-                                      Text(
-                                        '메뉴명',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 120,
-                                      ),
-                                      Text(
-                                        '갯수',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              if (loading) Container(
-                                margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-                                child: CircularProgressIndicator(),
-                              )
-                              else
-                                Expanded(
-                                  child: ListView.builder(
-                                    key: PageStorageKey("MENU_LIST"),
-                                    itemCount: menu.length,
-                                    itemBuilder: (context, index) => Container(
-                                      height: 120,
-                                      child: Card(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: 260,
-                                                  child: ListTile(
-                                                    title: Row(
-                                                      children: [
-                                                        Text(
-                                                          "(" + menu[index]['menu_type'].toString() + ") ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          menu[index]['menu_size'].toString() + " ",
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          menu[index]['menu'].toString(),
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    subtitle: Text((menu[index]['menu_detail'] ?? '').toString()),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 6,),
-                                                Container(
-                                                  width: 100,
-                                                  child: Text(menu[index]['count'].toString()),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(menu[index]['name'].toString()),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
