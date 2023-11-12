@@ -8,11 +8,11 @@ class ListOpenModal extends StatefulWidget {
   const ListOpenModal({
     super.key,
     required this.function,
-    required this.no,
+    required this.token,
   });
 
   final Function function;
-  final String no;
+  final String token;
 
   @override
   State<ListOpenModal> createState() => _ListOpenModalState();
@@ -24,7 +24,7 @@ class _ListOpenModalState extends State<ListOpenModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('https://goseam.com/api/room/' + widget.no.toString() + '/open'),
+      Uri.parse('http://localhost/api/room/' + widget.token.toString() + '/open'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

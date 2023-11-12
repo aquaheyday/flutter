@@ -25,7 +25,7 @@ class _ListAddModalState extends State<ListAddModal> {
 
   callAPI() async {
     var response = await http.post(
-      Uri.parse('https://goseam.com/api/room'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -47,7 +47,7 @@ class _ListAddModalState extends State<ListAddModal> {
 
       if (map['success']) {
         Navigator.pop(context);
-        context.go('/room/' + jsonDecode(response.body)['data']['room_id'].toString());
+        context.go('/room/' + jsonDecode(response.body)['data']['token'].toString());
       } else {
         showDialog(
             context: context,

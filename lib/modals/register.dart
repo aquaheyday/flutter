@@ -27,7 +27,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('https://goseam.com/api/register'),
+        Uri.parse('http://localhost/api/register'),
         headers: <String, String> {
           'Content-Type': 'application/json'
         },

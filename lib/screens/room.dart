@@ -12,10 +12,10 @@ import 'package:go_router/go_router.dart';
 class Room extends StatefulWidget {
   const Room({
     super.key,
-    required this.no,
+    required this.token,
   });
 
-  final String no;
+  final String token;
 
   @override
   State<Room> createState() => _RoomState();
@@ -26,13 +26,13 @@ class _RoomState extends State<Room> {
   var user = [];
   var menu = [];
   var room = [];
-  var end = 'N';
-  var creater = 0;
+  var end_yn = 'N';
+  var create_yn = 'N';
 
-  callAPI(no) async {
-    if (no != '') {
+  callAPI(token) async {
+    if (token != '') {
       var response = await http.get(
-        Uri.parse('https://goseam.com/api/order/' + no),
+        Uri.parse('http://localhost/api/order/' + token),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -46,8 +46,8 @@ class _RoomState extends State<Room> {
           menu = jsonDecode(decodeBody)['data']['menu'];
           room = jsonDecode(decodeBody)['data']['room'];
           loading = false;
-          end = room[0]['end'];
-          creater = room[0]['creater'];
+          end_yn = room[0]['end_yn'];
+          create_yn = room[0]['create_yn'];
         });
       }
     }
@@ -57,7 +57,7 @@ class _RoomState extends State<Room> {
   void initState() {
     super.initState();
     if (window.localStorage['tkn'] != null) {
-      callAPI(widget.no);
+      callAPI(widget.token);
     } else {
       context.go('/');
     }
@@ -69,16 +69,16 @@ class _RoomState extends State<Room> {
       menu = [];
       room = [];
       loading = true;
-      end = 'N';
-      creater = 0;
+      end_yn = 'N';
+      create_yn = 'N';
     });
-    callAPI(widget.no);
+    callAPI(widget.token);
   }
 
   @override
   Widget build(BuildContext context) {
-    var pageWidth = MediaQuery.of(context).size.width;
-    var isWeb = pageWidth > 800 ? true : false;
+    //var pageWidth = MediaQuery.of(context).size.width;
+    //var isWeb = pageWidth > 800 ? true : false;
 
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Pretendard'),
@@ -118,7 +118,7 @@ class _RoomState extends State<Room> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              room.length > 0 ? room[0]['room_type'] : "",
+                              room.length > 0 ? room[0]['type'] : "",
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -214,7 +214,7 @@ class _RoomState extends State<Room> {
                                                       ),
                                                     ),
                                                     SizedBox(height: 4),
-                                                    if (user[index]['pickup'] == 'Y') Text(
+                                                    if (user[index]['pick_up_yn'] == 'Y') Text(
                                                       user[index]['name'] + "★",
                                                       style: TextStyle(
                                                         fontSize: 14,
@@ -298,7 +298,7 @@ class _RoomState extends State<Room> {
                                                   ),
                                                 ),
                                               ),
-                                              if (end == 'N' && user[index]['creater'] == 1) Container(
+                                              if (end_yn == 'N' && user[index]['create_yn'] == 1) Container(
                                                 width: 40,
                                                 height: 40,
                                                 margin: EdgeInsets.only(left: 10, right: 10),
@@ -454,13 +454,13 @@ class _RoomState extends State<Room> {
                     margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
                     child: CircularProgressIndicator(),
                   ) else
-                    if (end == 'Y')
+                    if (end_yn == 'Y')
                       Align(
                         alignment: Alignment.topLeft,
                         child: Wrap(
                           children: [
                             for (int i = 0; i < user.length; i++)
-                              if (user[i]['pickup'] == 'Y')
+                              if (user[i]['pick_up_yn'] == 'Y')
                                 Container(
                                   margin: EdgeInsets.fromLTRB(0, 4, 10, 0),
                                   child: Column(
@@ -502,14 +502,14 @@ class _RoomState extends State<Room> {
               margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
               child: CircularProgressIndicator(),
             ) else
-              if (creater == 1)
-                if (end == 'Y') FloatingActionButton(
+              if (create_yn == 'Y')
+                if (end_yn == 'Y') FloatingActionButton(
                   onPressed: () {
                     showDialog(
                         barrierDismissible: false,
                         context: context,
                         builder: (BuildContext context) {
-                          return ListOpenModal(function: ReBuild, no: widget.no);
+                          return ListOpenModal(function: ReBuild, token: widget.token);
                         }
                     );
                   },
@@ -521,7 +521,7 @@ class _RoomState extends State<Room> {
                         barrierDismissible: false,
                         context: context,
                         builder: (BuildContext context) {
-                          return ListCloseModal(function: ReBuild, no: widget.no);
+                          return ListCloseModal(function: ReBuild, token: widget.token);
                         }
                     );
                   },
@@ -531,14 +531,14 @@ class _RoomState extends State<Room> {
             SizedBox(
               height: 10,
             ),
-            if (!loading && end == 'N')
+            if (!loading && end_yn == 'N')
             FloatingActionButton(
               onPressed: () {
                 showDialog(
                   barrierDismissible: false,
                   context: context,
                   builder: (BuildContext context) {
-                    return OrderModal(function: ReBuild, no: widget.no);
+                    return OrderModal(function: ReBuild, token: widget.token);
                   }
                 );
               },

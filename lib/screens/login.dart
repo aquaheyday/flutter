@@ -360,7 +360,7 @@ class _LoginFormState extends State<LoginForm> {
     bool success = false;
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('https://goseam.com/api/login'),
+        Uri.parse('http://localhost/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json'
         },

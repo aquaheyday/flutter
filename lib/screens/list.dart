@@ -136,7 +136,7 @@ class MyMainListState extends State<MyMainList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -156,9 +156,9 @@ class MyMainListState extends State<MyMainList> {
     }
   }
 
-  _RoomInApi(id) async {
+  _RoomInApi(token) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + id.toString()),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -166,7 +166,7 @@ class MyMainListState extends State<MyMainList> {
     );
 
     if (response.statusCode == 200) {
-      context.go('/room/' + id.toString());
+      context.go('/room/' + token);
     }
   }
 
@@ -235,7 +235,7 @@ class MyMainListState extends State<MyMainList> {
                                 Container(
                                   width: isWeb ? 200 : 170,
                                   child: ListTile(
-                                    title: Text((all[index]['end'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
+                                    title: Text((all[index]['end_yn'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
                                     subtitle: Text(all[index]['name']),
                                   ),
                                 ),
@@ -247,14 +247,14 @@ class MyMainListState extends State<MyMainList> {
                                       height: 40,
                                       child: TextButton(
                                         onPressed: () {
-                                          if (all[index]['creater'] == 1 || all[index]['insider'] == 1) {
-                                            _RoomInApi(all[index]['id']);
+                                          if (all[index]['create_yn'] == 'Y' || all[index]['inside_yn'] == 'Y') {
+                                            _RoomInApi(all[index]['token']);
                                           } else {
                                             showDialog(
                                                 barrierDismissible: false,
                                                 context: context,
                                                 builder: (BuildContext context) {
-                                                  return InButton(no: all[index]['id']);
+                                                  return InButton(token: all[index]['token']);
                                                 }
                                             );
                                           }
@@ -262,7 +262,7 @@ class MyMainListState extends State<MyMainList> {
                                         child: Text('입장'),
                                       ),
                                     ),
-                                    if (all[index]['creater'] == 1) Container(
+                                    if (all[index]['create_yn'] == 'Y') Container(
                                       width: 100,
                                       height: 40,
                                       child: TextButton(
@@ -271,7 +271,7 @@ class MyMainListState extends State<MyMainList> {
                                               barrierDismissible: false,
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return DeleteButton(id: all[index]['id'], function: ReBuild);
+                                                return DeleteButton(token: all[index]['token'], function: ReBuild);
                                               }
                                           );
                                         },
@@ -307,7 +307,7 @@ class MyMainListState extends State<MyMainList> {
                                   Container(
                                     width: isWeb ? 200 : 170,
                                     child: ListTile(
-                                      title: Text((inside[index]['end'] == 'Y' ? '(마감) ' : '') + inside[index]['title']),
+                                      title: Text((inside[index]['end_yn'] == 'Y' ? '(마감) ' : '') + inside[index]['title']),
                                       subtitle: Text(inside[index]['name']),
                                     ),
                                   ),
@@ -319,12 +319,12 @@ class MyMainListState extends State<MyMainList> {
                                         height: 40,
                                         child: TextButton(
                                           onPressed: () {
-                                            _RoomInApi(inside[index]['id']);
+                                            _RoomInApi(inside[index]['token']);
                                           },
                                           child: Text('입장'),
                                         ),
                                       ),
-                                      if (inside[index]['creater'] == 1) Container(
+                                      if (inside[index]['create_yn'] == 'Y') Container(
                                         width: 100,
                                         height: 40,
                                         child: TextButton(
@@ -333,7 +333,7 @@ class MyMainListState extends State<MyMainList> {
                                                 barrierDismissible: false,
                                                 context: context,
                                                 builder: (BuildContext context) {
-                                                  return DeleteButton(id: inside[index]['id'], function: ReBuild);
+                                                  return DeleteButton(token: inside[index]['token'], function: ReBuild);
                                                 }
                                             );
                                           },
@@ -369,7 +369,7 @@ class MyMainListState extends State<MyMainList> {
                                 Container(
                                   width: isWeb ? 200 : 170,
                                   child: ListTile(
-                                    title: Text((create[index]['end'] == 'Y' ? '(마감) ' : '') + create[index]['title']),
+                                    title: Text((create[index]['end_yn'] == 'Y' ? '(마감) ' : '') + create[index]['title']),
                                   ),
                                 ),
                                 Row(
@@ -380,7 +380,7 @@ class MyMainListState extends State<MyMainList> {
                                       height: 40,
                                       child: TextButton(
                                         onPressed: () {
-                                          _RoomInApi(create[index]['id']);
+                                          _RoomInApi(create[index]['token']);
                                         },
                                         child: Text('입장'),
                                       ),
@@ -394,7 +394,7 @@ class MyMainListState extends State<MyMainList> {
                                               barrierDismissible: false,
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return DeleteButton(id: create[index]['id'], function: ReBuild);
+                                                return DeleteButton(token: create[index]['token'], function: ReBuild);
                                               }
                                           );
                                         },
@@ -431,11 +431,11 @@ class MyMainListState extends State<MyMainList> {
 class DeleteButton extends StatefulWidget {
   const DeleteButton({
     super.key,
-    required this.id,
+    required this.token,
     required this.function,
   });
 
-  final int id;
+  final String token;
   final Function function;
 
   @override
@@ -445,9 +445,9 @@ class DeleteButton extends StatefulWidget {
 class _DeleteButtonState extends State<DeleteButton> {
   bool _isLoading = false;
 
-  RoomDeleteApi(BuildContext context, id) async {
+  RoomDeleteApi(BuildContext context, token) async {
     await http.delete(
-      Uri.parse('https://goseam.com/api/room/' + id.toString()),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -504,7 +504,7 @@ class _DeleteButtonState extends State<DeleteButton> {
                 child: ElevatedButton.icon(
                   onPressed: _isLoading ? null : () {
                     setState(() => _isLoading = true);
-                    RoomDeleteApi(context, widget.id);
+                    RoomDeleteApi(context, widget.token);
                   },
                   style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
                   icon: _isLoading ? Container(
@@ -530,10 +530,10 @@ class _DeleteButtonState extends State<DeleteButton> {
 class InButton extends StatefulWidget {
   const InButton({
     super.key,
-    required this.no,
+    required this.token,
   });
 
-  final int no;
+  final String token;
 
   @override
   State<InButton> createState() => _InButtonState();
@@ -545,9 +545,9 @@ class _InButtonState extends State<InButton> {
   final formKey = GlobalKey<FormState>();
   TextEditingController password = TextEditingController();
 
-  callAPI(no) async {
+  callAPI(token) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + no.toString()),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -559,7 +559,7 @@ class _InButtonState extends State<InButton> {
       var decodeBody = utf8.decode(response.bodyBytes);
       Map<String, dynamic> map = jsonDecode(decodeBody);
       if (map['success']) {
-        context.go('/room/' + no.toString());
+        context.go('/room/' + token);
       } else {
         showDialog(
             context: context,
@@ -625,7 +625,7 @@ class _InButtonState extends State<InButton> {
                   onPressed: _isLoading ? null : () {
                     if (formKey.currentState!.validate()) {
                       setState(() => _isLoading = true);
-                      callAPI(widget.no);
+                      callAPI(widget.token);
                     }
                   },
                   style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
@@ -668,7 +668,7 @@ class MyPieChartState extends State {
 
   _aApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/chart'),
+      Uri.parse('http://localhost/api/room/chart'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -938,7 +938,7 @@ class _MyTopListState extends State<MyTopList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/top'),
+      Uri.parse('http://localhost/api/room/top'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

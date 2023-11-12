@@ -8,11 +8,11 @@ class ListCloseModal extends StatefulWidget {
   const ListCloseModal({
     super.key,
     required this.function,
-    required this.no,
+    required this.token,
   });
 
   final Function function;
-  final String no;
+  final String token;
 
   @override
   State<ListCloseModal> createState() => _ListCloseModalState();
@@ -24,7 +24,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('https://goseam.com/api/room/' + widget.no.toString() + '/end'),
+      Uri.parse('http://localhost/api/room/' + widget.token.toString() + '/end'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

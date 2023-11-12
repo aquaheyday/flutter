@@ -28,6 +28,17 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
               children: [
                 TextButton(
                   onPressed: () {
+                    context.go('/profile');
+                  },
+                  child: Text(
+                    "내정보",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
                     window.localStorage.remove('tkn');
                     context.go('/');
                   },
@@ -37,17 +48,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
                       color: Colors.white,
                     ),
                   ),
-                  /*Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/dog.png'),
-                        )
-                    ),
-                  ),*/
                 ),
               ],
             )
