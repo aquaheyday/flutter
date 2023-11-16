@@ -29,7 +29,7 @@ class Home extends StatelessWidget {
                 child: Text(
                   "Goseam",
                   style: TextStyle(
-                    fontSize: 48,
+                    fontSize: 62,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
               ),
               Container(
                 width: 422,
-                height: 352,
+                height: 364,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -90,11 +90,11 @@ class Home extends StatelessWidget {
                             width: 140,
                             height: 50,
                             decoration: BoxDecoration(
+                              color: Color.fromRGBO(240, 240, 240, 1),
                               border: Border(
                                 bottom: BorderSide(
                                   width: 1,
                                   color: Colors.grey,
-
                                 ),
                                 left: BorderSide(
                                   width: 1,
@@ -136,6 +136,7 @@ class Home extends StatelessWidget {
                             width: 140,
                             height: 50,
                             decoration: BoxDecoration(
+                              color: Color.fromRGBO(240, 240, 240, 1),
                               border: Border(
                                 left: BorderSide(
                                   width: 1,
@@ -225,18 +226,14 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox( height: 40),
+              SizedBox( height: 20),
               Container(
                 width: 420,
                 height: 140,
-                color: Colors.blue,
-                child: Center(
-                  child: Text(
-                    '광고 구역 입니다.',
-                    style: TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                    ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/login.jpg'),
                   ),
                 ),
               ),
@@ -354,19 +351,20 @@ class _LoginFormState extends State<LoginForm> {
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController check = TextEditingController();
+  bool check = false;
 
   _callAPI() async {
     bool success = false;
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('https://goseam.com/api/login'),
+        Uri.parse('http://localhost/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json'
         },
         body: jsonEncode({
           'email': email.text,
           'password': password.text,
+          'check': check,
         }),
       );
       if (response.statusCode == 200) {
@@ -428,7 +426,14 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               Row(
                 children: [
-                  MySwitch(),
+                  Switch(
+                    value: check,
+                    onChanged: (value) {
+                      setState(() {
+                        check = value;
+                      });
+                    },
+                  ),
                   Text(
                     '로그인 상태 유지',
                     textAlign: TextAlign.center,

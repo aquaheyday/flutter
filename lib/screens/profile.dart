@@ -2,6 +2,9 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter1/screens/app_bar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:go_router/go_router.dart';
 
 class MyProfile extends StatelessWidget {
   const MyProfile({super.key});
@@ -33,6 +36,44 @@ class MyInfo extends StatefulWidget {
 }
 
 class _MyInfoState extends State<MyInfo> {
+
+  String name = "";
+  String email = "";
+  int total_count = 0;
+  int pick_up_count = 0;
+
+  _ListApi() async {
+    var response = await http.get(
+      Uri.parse('http://localhost/api/user'),
+      headers: <String, String>{
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+      },
+    );
+
+    if (response.statusCode == 200) {
+
+      setState(() {
+        var decodeBody = utf8.decode(response.bodyBytes);
+        Map<String, dynamic> map = jsonDecode(decodeBody);
+        name = map["data"]["name"];
+        email = map["data"]["email"];
+        total_count = map["data"]["total_count"];
+        pick_up_count = int.parse(map["data"]["pick_up_count"]);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (window.localStorage['tkn'] != null) {
+      _ListApi();
+    } else {
+      context.go('/');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,15 +83,16 @@ class _MyInfoState extends State<MyInfo> {
           height: 40,
         ),
         Text(
-          "기본정보",
+          " 기본정보",
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
+        SizedBox(height: 6,),
         Container(
           width: double.infinity,
-          height: 100,
+          height: 200,
           child: Card(
             child: Column(
               children: [
@@ -90,14 +132,15 @@ class _MyInfoState extends State<MyInfo> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "닉네임aaa",
+                                name,
                                 style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              SizedBox(height: 4,),
                               Text(
-                                "bjkim@enliple.com",
+                                email,
                                 style: TextStyle(
                                   color: Colors.grey,
                                 ),
@@ -113,10 +156,80 @@ class _MyInfoState extends State<MyInfo> {
                         onPressed: () {
                           print("test2");
                         },
-                        child: Text("수정"),
+                        child: Text("프로필명 수정"),
                       ),
                     ),
                   ],
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: Color.fromRGBO(230, 230, 230, 1),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.lock_outline,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10,),
+                          Text('비밀번호'),
+                        ],
+                      ),
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("test2");
+                          },
+                          child: Text("수정"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: Color.fromRGBO(230, 230, 230, 1),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.email_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10,),
+                          Text('이메일'),
+                        ],
+                      ),
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("test2");
+                          },
+                          child: Text("수정"),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -126,12 +239,13 @@ class _MyInfoState extends State<MyInfo> {
           height: 20,
         ),
         Text(
-          "주문횟수",
+          " 주문횟수",
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
+        SizedBox(height: 6,),
         Container(
           width: double.infinity,
           height: 100,
@@ -140,7 +254,7 @@ class _MyInfoState extends State<MyInfo> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
                 children: [
-                  Text("123")
+                  Text(total_count.toString()),
                 ],
               ),
             ),
@@ -150,12 +264,13 @@ class _MyInfoState extends State<MyInfo> {
           height: 20,
         ),
         Text(
-          "배달횟수",
+          " 배달횟수",
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
+        SizedBox(height: 6,),
         Container(
           width: double.infinity,
           height: 100,
@@ -164,7 +279,7 @@ class _MyInfoState extends State<MyInfo> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
                 children: [
-                  Text("12")
+                  Text(pick_up_count.toString()),
                 ],
               ),
             ),
