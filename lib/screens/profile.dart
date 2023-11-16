@@ -44,7 +44,7 @@ class _MyInfoState extends State<MyInfo> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/user'),
+      Uri.parse('https://goseam.com/api/user'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
