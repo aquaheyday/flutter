@@ -42,6 +42,9 @@ class _MyInfoState extends State<MyInfo> {
   int total_count = 0;
   int pick_up_count = 0;
 
+  bool check = false;
+  bool check2 = false;
+
   _ListApi() async {
     var response = await http.get(
       Uri.parse('https://goseam.com/api/user'),
@@ -83,7 +86,7 @@ class _MyInfoState extends State<MyInfo> {
           height: 40,
         ),
         Text(
-          " 기본정보",
+          " 기본 정보",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -92,7 +95,7 @@ class _MyInfoState extends State<MyInfo> {
         SizedBox(height: 6,),
         Container(
           width: double.infinity,
-          height: 200,
+          height: 250,
           child: Card(
             child: Column(
               children: [
@@ -231,6 +234,137 @@ class _MyInfoState extends State<MyInfo> {
                     ],
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: Color.fromRGBO(230, 230, 230, 1),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_android_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10,),
+                          Text('연락처'),
+                        ],
+                      ),
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print("test2");
+                          },
+                          child: Text("수정"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          " 정보 수신 동의",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(
+          height: 6,
+        ),
+        Container(
+          width: double.infinity,
+          height: 120,
+          child: Card(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.email_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10,),
+                          Text('이메일'),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 34,
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Switch(
+                            value: check,
+                            onChanged: (value) {
+                              setState(() {
+                                check = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        width: 1,
+                        color: Color.fromRGBO(230, 230, 230, 1),
+                      ),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.phone_android_outlined,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 10,),
+                          Text('연락처'),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 34,
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Switch(
+                            value: check2,
+                            onChanged: (value) {
+                              setState(() {
+                                check2 = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -245,7 +379,9 @@ class _MyInfoState extends State<MyInfo> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 6,),
+        SizedBox(
+          height: 6,
+        ),
         Container(
           width: double.infinity,
           height: 100,
