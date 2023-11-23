@@ -105,7 +105,7 @@ class _MyInfoState extends State<MyInfo> {
 
   chooseFileUsingFilePicker() async {
     var result = await FilePickerWeb.platform.pickFiles(
-      allowedExtensions: ['png'],
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
       type: FileType.custom,
       allowMultiple: false,
       withData: true,
@@ -138,7 +138,7 @@ class _MyInfoState extends State<MyInfo> {
             builder: (BuildContext context) {
               return AlertDialog(
                 actions: [
-                  Text('png 파일만 업로드 가능합니다.'),
+                  Text('jpg, jpeg, png 파일만 업로드 가능합니다.'),
                 ],
               );
             }
