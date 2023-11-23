@@ -755,7 +755,7 @@ class MyPieChartState extends State {
                                   return PieChartSectionData(
                                     color: Colors.blue,
                                     value: userRate,
-                                    title: userRate.toString() + '%' + allCount.toString(),
+                                    title: userRate.toString() + '%',
                                     radius: radius,
                                     titleStyle: TextStyle(
                                       fontSize: fontSize,
@@ -953,6 +953,9 @@ class _MyTopListState extends State<MyTopList> {
         email = map['data']['email'];
         loading = false;
       });
+    } else if (response.statusCode == 401) {
+      window.localStorage.remove('tkn');
+      context.go('/');
     }
   }
 

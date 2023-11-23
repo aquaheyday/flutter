@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter1/modals/register.dart';
+import 'package:flutter1/modals/find_email.dart';
 import 'package:flutter1/modals/find_password.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
@@ -170,6 +171,24 @@ class Home extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return FindEmailModal();
+                            }
+                        );
+                      },
+                      child: Text(
+                        '이메일찾기',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
                     TextButton(
                       onPressed: () {
                         showDialog(

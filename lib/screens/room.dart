@@ -49,6 +49,9 @@ class _RoomState extends State<Room> {
           end_yn = room[0]['end_yn'];
           create_yn = room[0]['create_yn'];
         });
+      } else if (response.statusCode == 401) {
+        window.localStorage.remove('tkn');
+        context.go('/');
       }
     }
   }

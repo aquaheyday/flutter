@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
 
-class FindPasswordModal extends StatefulWidget {
-  const FindPasswordModal({super.key});
+class FindEmailModal extends StatefulWidget {
+  const FindEmailModal({super.key});
 
   @override
-  State<FindPasswordModal> createState() => _FindPasswordModalState();
+  State<FindEmailModal> createState() => _FindEmailModalState();
 }
 
-class _FindPasswordModalState extends State<FindPasswordModal> {
+class _FindEmailModalState extends State<FindEmailModal> {
   bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController email = TextEditingController();
+  TextEditingController number = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _FindPasswordModalState extends State<FindPasswordModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '비밀번호찾기',
+                            '이메일찾기',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class _FindPasswordModalState extends State<FindPasswordModal> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      MyTextFormField(name: email, label: '이메일', validator: '이메일을 입력해 주세요.', obscure: false),
+                      MyTextFormField(name: number, label: '연락처', validator: '연락처를 입력해 주세요.', obscure: false),
                     ],
                   ),
                 ),

@@ -88,6 +88,9 @@ class _MyInfoState extends State<MyInfo> {
         total_count = map["data"]["total_count"].toString();
         pick_up_count = map["data"]["pick_up_count"].toString();
       });
+    } else if (response.statusCode == 401) {
+      window.localStorage.remove('tkn');
+      context.go('/');
     }
   }
 
