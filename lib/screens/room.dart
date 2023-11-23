@@ -207,9 +207,13 @@ class _RoomState extends State<Room> {
                                                       height: 50,
                                                       decoration: BoxDecoration(
                                                         borderRadius: BorderRadius.circular(50),
+                                                        border: Border.all(
+                                                          color: Colors.grey,
+                                                          width: 1,
+                                                        ),
                                                         image: DecorationImage(
                                                           fit: BoxFit.cover,
-                                                          image: AssetImage('assets/dog.png'),
+                                                          image: NetworkImage('https://goseam.com' + user[index]['image_path'].toString()),
                                                         ),
                                                       ),
                                                     ),
