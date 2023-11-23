@@ -953,7 +953,7 @@ class _MyTopListState extends State<MyTopList> {
         email = map['data']['email'];
         loading = false;
       });
-    } else if (response.statusCode == 401) {
+    } else if (response.statusCode == 500) {
       window.localStorage.remove('tkn');
       context.go('/');
     }
