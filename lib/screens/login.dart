@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter1/modals/register.dart';
 import 'package:flutter1/modals/find_password.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter1/widgets/switch.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

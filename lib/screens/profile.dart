@@ -1,10 +1,13 @@
 import 'dart:html';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter1/screens/app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
+import 'package:flutter1/modals/profile.dart';
+import 'package:file_picker/_internal/file_picker_web.dart';
 
 class MyProfile extends StatelessWidget {
   const MyProfile({super.key});
@@ -39,11 +42,30 @@ class _MyInfoState extends State<MyInfo> {
 
   String name = "";
   String email = "";
-  int total_count = 0;
-  int pick_up_count = 0;
-
+  String image_url = "";
+  String number = "";
+  String total_count = "0";
+  String pick_up_count = "0";
   bool check = false;
   bool check2 = false;
+
+  resetName(result) {
+    setState(() {
+      name = result.text;
+    });
+  }
+
+  resetEmail(result) {
+    setState(() {
+      email = result.text;
+    });
+  }
+
+  resetNumber(result) {
+    setState(() {
+      number = result.text;
+    });
+  }
 
   _ListApi() async {
     var response = await http.get(
@@ -61,8 +83,10 @@ class _MyInfoState extends State<MyInfo> {
         Map<String, dynamic> map = jsonDecode(decodeBody);
         name = map["data"]["name"];
         email = map["data"]["email"];
-        total_count = map["data"]["total_count"];
-        pick_up_count = int.parse(map["data"]["pick_up_count"]);
+        image_url = "https://goseam.com" + map["data"]["image_path"].toString();
+        number = map["data"]["number"];
+        total_count = map["data"]["total_count"].toString();
+        pick_up_count = map["data"]["pick_up_count"].toString();
       });
     }
   }
@@ -74,6 +98,52 @@ class _MyInfoState extends State<MyInfo> {
       _ListApi();
     } else {
       context.go('/');
+    }
+  }
+
+  PlatformFile? objFile = null;
+
+  chooseFileUsingFilePicker() async {
+    var result = await FilePickerWeb.platform.pickFiles(
+      allowedExtensions: ['png'],
+      type: FileType.custom,
+      allowMultiple: false,
+      withData: true,
+    );
+
+    if (result != null) {
+      if (!result.files.single.bytes!.isEmpty) {
+        var response = await http.put(
+          Uri.parse('https://goseam.com/api/user/image'),
+          headers: <String, String>{
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+          },
+          body: jsonEncode({
+            'image': base64Encode(result.files.single.bytes as List<int>),
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          setState(() {
+            var decodeBody = utf8.decode(response.bodyBytes);
+            Map<String, dynamic> map = jsonDecode(decodeBody);
+            image_url = "https://goseam.com" + map['data'].toString();
+          });
+        }
+
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                actions: [
+                  Text('png 파일만 업로드 가능합니다.'),
+                ],
+              );
+            }
+        );
+      }
     }
   }
 
@@ -114,16 +184,20 @@ class _MyInfoState extends State<MyInfo> {
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () {
-                              print("test");
+                              chooseFileUsingFilePicker();
                             },
                             child: Container(
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 1,
+                                ),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: AssetImage('assets/dog.png'),
+                                  image: NetworkImage(image_url),
                                 ),
                               ),
                             ),
@@ -157,7 +231,13 @@ class _MyInfoState extends State<MyInfo> {
                       padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                       child: ElevatedButton(
                         onPressed: () {
-                          print("test2");
+                          showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ProfileModal(type: 'name', function: resetName);
+                              }
+                          );
                         },
                         child: Text("프로필명 수정"),
                       ),
@@ -191,7 +271,13 @@ class _MyInfoState extends State<MyInfo> {
                       Container(
                         child: ElevatedButton(
                           onPressed: () {
-                            print("test2");
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ProfileModal(type: 'password', function: (){});
+                                }
+                            );
                           },
                           child: Text("수정"),
                         ),
@@ -220,13 +306,19 @@ class _MyInfoState extends State<MyInfo> {
                             color: Colors.grey,
                           ),
                           SizedBox(width: 10,),
-                          Text('이메일'),
+                          Text(email),
                         ],
                       ),
                       Container(
                         child: ElevatedButton(
                           onPressed: () {
-                            print("test2");
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ProfileModal(type: 'email', function: resetEmail);
+                                }
+                            );
                           },
                           child: Text("수정"),
                         ),
@@ -255,13 +347,19 @@ class _MyInfoState extends State<MyInfo> {
                             color: Colors.grey,
                           ),
                           SizedBox(width: 10,),
-                          Text('연락처'),
+                          Text(number.isEmpty ? "연락처" : number),
                         ],
                       ),
                       Container(
                         child: ElevatedButton(
                           onPressed: () {
-                            print("test2");
+                            showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return ProfileModal(type: 'number', function: resetNumber);
+                                }
+                            );
                           },
                           child: Text("수정"),
                         ),
@@ -390,7 +488,7 @@ class _MyInfoState extends State<MyInfo> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
                 children: [
-                  Text(total_count.toString()),
+                  Text(total_count),
                 ],
               ),
             ),
@@ -415,7 +513,7 @@ class _MyInfoState extends State<MyInfo> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
                 children: [
-                  Text(pick_up_count.toString()),
+                  Text(pick_up_count),
                 ],
               ),
             ),
