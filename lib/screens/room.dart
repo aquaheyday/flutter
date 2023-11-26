@@ -56,6 +56,22 @@ class _RoomState extends State<Room> {
     }
   }
 
+  deleteApi(id) async {
+    if (id != '') {
+      var response = await http.delete(
+        Uri.parse('https://goseam.com/api/order/' + id),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
+        },
+      );
+
+      if (response.statusCode == 200) {
+        ReBuild();
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -222,7 +238,7 @@ class _RoomState extends State<Room> {
                                                     ),
                                                     SizedBox(height: 4),
                                                     if (user[index]['pick_up_yn'] == 'Y') Text(
-                                                      user[index]['name'] + "★",
+                                                      user[index]['name'],
                                                       style: TextStyle(
                                                         fontSize: 14,
                                                         color: Colors.blue,
@@ -305,14 +321,14 @@ class _RoomState extends State<Room> {
                                                   ),
                                                 ),
                                               ),
-                                              if (end_yn == 'N' && user[index]['create_yn'] == 1) Container(
+                                              if (end_yn == 'N' && user[index]['create_yn'] == "Y") Container(
                                                 width: 40,
                                                 height: 40,
                                                 margin: EdgeInsets.only(left: 10, right: 10),
                                                 child: IconButton(
                                                   padding: EdgeInsets.zero,
                                                   constraints: BoxConstraints(),
-                                                  onPressed: () => print('test'),
+                                                  onPressed: () { deleteApi(user[index]['id'].toString()); },
                                                   tooltip: '삭제',
                                                   icon: Icon(
                                                     Icons.close,
@@ -478,9 +494,13 @@ class _RoomState extends State<Room> {
                                         height: 50,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(50),
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                            width: 1,
+                                          ),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: AssetImage('assets/dog.png'),
+                                            image: NetworkImage('https://goseam.com' + user[i]['image_path'].toString()),
                                           ),
                                         ),
                                       ),
