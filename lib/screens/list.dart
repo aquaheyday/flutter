@@ -29,7 +29,7 @@ class MyList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: isWeb ? 700 : 400,
+              width: isWeb ? 500 : 400,
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Column(
                 children: [
@@ -55,48 +55,51 @@ class MyList extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 40,),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(height: 82),
-                Container(
-                  width: 300,
-                  padding: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 1,
-                        color: Colors.grey,
+            SizedBox(width: 20,),
+            Container(
+              width: 240,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(height: 82),
+                  Container(
+                    width: 240,
+                    padding: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
+                    child: Text('배달원 당첨율'),
                   ),
-                  child: Text('배달원 당첨율'),
-                ),
-                Container(
-                  width: 300,
-                  height: 320,
-                  child: MyPieChart(),
-                ),
-                Container(
-                  width: 300,
-                  padding: EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 1,
-                        color: Colors.grey,
+                  Container(
+                    width: 240,
+                    height: 320,
+                    child: MyPieChart(),
+                  ),
+                  Container(
+                    width: 300,
+                    padding: EdgeInsets.only(bottom: 10),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 1,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
+                    child: Text('Top 10'),
                   ),
-                  child: Text('Top 10'),
-                ),
-                Container(
-                  width: 300,
-                  height: 300,
-                  child: MyTopList(),
-                ),
-              ],
+                  Container(
+                    width: 300,
+                    height: 300,
+                    child: MyTopList(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -233,7 +236,7 @@ class MyMainListState extends State<MyMainList> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: isWeb ? 200 : 170,
+                                  width: isWeb ? 350 : 170,
                                   child: ListTile(
                                     title: Text((all[index]['end_yn'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
                                     subtitle: Text(all[index]['name']),
@@ -243,9 +246,12 @@ class MyMainListState extends State<MyMainList> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 100,
-                                      height: 40,
-                                      child: TextButton(
+                                      width: 50,
+                                      child: IconButton(
+                                        tooltip: "입장",
+                                        color: Colors.blue,
+                                        padding: EdgeInsets.zero,
+                                        constraints: BoxConstraints(),
                                         onPressed: () {
                                           if (all[index]['create_yn'] == 'Y' || all[index]['inside_yn'] == 'Y') {
                                             _RoomInApi(all[index]['token']);
@@ -259,13 +265,14 @@ class MyMainListState extends State<MyMainList> {
                                             );
                                           }
                                         },
-                                        child: Text('입장'),
+                                        icon: Icon(Icons.sensor_door_outlined, size: 18),
                                       ),
                                     ),
                                     if (all[index]['create_yn'] == 'Y') Container(
-                                      width: 100,
-                                      height: 40,
-                                      child: TextButton(
+                                      width: 50,
+                                      child: IconButton(
+                                        tooltip: "삭제",
+                                        color: Colors.redAccent,
                                         onPressed: () {
                                           showDialog(
                                               barrierDismissible: false,
@@ -275,19 +282,14 @@ class MyMainListState extends State<MyMainList> {
                                               }
                                           );
                                         },
-                                        child: Text(
-                                          '삭제',
-                                          style: TextStyle(
-                                              color: Colors.redAccent
-                                          ),
-                                        ),
+                                        icon: Icon(Icons.delete, size: 18),
                                       ),
                                     ),
                                     SizedBox(
                                       width: 20,
                                     ),
                                   ],
-                                )
+                                ),
                               ],
                             )
                           ),
@@ -305,51 +307,60 @@ class MyMainListState extends State<MyMainList> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    width: isWeb ? 200 : 170,
+                                    width: isWeb ? 350 : 170,
                                     child: ListTile(
-                                      title: Text((inside[index]['end_yn'] == 'Y' ? '(마감) ' : '') + inside[index]['title']),
-                                      subtitle: Text(inside[index]['name']),
+                                      title: Text((all[index]['end_yn'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
+                                      subtitle: Text(all[index]['name']),
                                     ),
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: 100,
-                                        height: 40,
-                                        child: TextButton(
+                                        width: 50,
+                                        child: IconButton(
+                                          tooltip: "입장",
+                                          color: Colors.blue,
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
                                           onPressed: () {
-                                            _RoomInApi(inside[index]['token']);
+                                            if (all[index]['create_yn'] == 'Y' || all[index]['inside_yn'] == 'Y') {
+                                              _RoomInApi(all[index]['token']);
+                                            } else {
+                                              showDialog(
+                                                  barrierDismissible: false,
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return InButton(token: all[index]['token']);
+                                                  }
+                                              );
+                                            }
                                           },
-                                          child: Text('입장'),
+                                          icon: Icon(Icons.sensor_door_outlined, size: 18),
                                         ),
                                       ),
-                                      if (inside[index]['create_yn'] == 'Y') Container(
-                                        width: 100,
-                                        height: 40,
-                                        child: TextButton(
+                                      if (all[index]['create_yn'] == 'Y') Container(
+                                        width: 50,
+                                        child: IconButton(
+                                          tooltip: "삭제",
+                                          color: Colors.redAccent,
                                           onPressed: () {
                                             showDialog(
                                                 barrierDismissible: false,
                                                 context: context,
                                                 builder: (BuildContext context) {
-                                                  return DeleteButton(token: inside[index]['token'], function: ReBuild);
+                                                  return DeleteButton(token: all[index]['token'], function: ReBuild);
                                                 }
                                             );
                                           },
-                                          child: Text(
-                                            '삭제',
-                                            style: TextStyle(
-                                                color: Colors.redAccent
-                                            ),
-                                          ),
+                                          icon: Icon(Icons.delete, size: 18),
                                         ),
                                       ),
                                       SizedBox(
                                         width: 20,
                                       ),
                                     ],
-                                  )
+                                  ),
                                 ],
                               )
                           ),
@@ -367,43 +378,53 @@ class MyMainListState extends State<MyMainList> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width: isWeb ? 200 : 170,
+                                  width: isWeb ? 350 : 170,
                                   child: ListTile(
-                                    title: Text((create[index]['end_yn'] == 'Y' ? '(마감) ' : '') + create[index]['title']),
+                                    title: Text((all[index]['end_yn'] == 'Y' ? '(마감) ' : '') + all[index]['title']),
+                                    subtitle: Text(all[index]['name']),
                                   ),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Container(
-                                      width: 100,
-                                      height: 40,
-                                      child: TextButton(
+                                      width: 50,
+                                      child: IconButton(
+                                        tooltip: "입장",
+                                        color: Colors.blue,
+                                        padding: EdgeInsets.zero,
+                                        constraints: BoxConstraints(),
                                         onPressed: () {
-                                          _RoomInApi(create[index]['token']);
+                                          if (all[index]['create_yn'] == 'Y' || all[index]['inside_yn'] == 'Y') {
+                                            _RoomInApi(all[index]['token']);
+                                          } else {
+                                            showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return InButton(token: all[index]['token']);
+                                                }
+                                            );
+                                          }
                                         },
-                                        child: Text('입장'),
+                                        icon: Icon(Icons.sensor_door_outlined, size: 18),
                                       ),
                                     ),
-                                    Container(
-                                      width: 100,
-                                      height: 40,
-                                      child: TextButton(
+                                    if (all[index]['create_yn'] == 'Y') Container(
+                                      width: 50,
+                                      child: IconButton(
+                                        tooltip: "삭제",
+                                        color: Colors.redAccent,
                                         onPressed: () {
                                           showDialog(
                                               barrierDismissible: false,
                                               context: context,
                                               builder: (BuildContext context) {
-                                                return DeleteButton(token: create[index]['token'], function: ReBuild);
+                                                return DeleteButton(token: all[index]['token'], function: ReBuild);
                                               }
                                           );
                                         },
-                                        child: Text(
-                                          '삭제',
-                                          style: TextStyle(
-                                              color: Colors.redAccent
-                                          ),
-                                        ),
+                                        icon: Icon(Icons.delete, size: 18),
                                       ),
                                     ),
                                     SizedBox(
