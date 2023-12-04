@@ -18,10 +18,11 @@ class _MyDropDownMenuState extends State<MyDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     var pageWidth = MediaQuery.of(context).size.width;
-    var isWeb = pageWidth > 800 ? true : false;
+    var isWeb = pageWidth > 700 ? true : false;
+
     return DropdownMenu(
       controller: widget.name,
-      width: isWeb ? 320 : 250,
+      width: isWeb ? 320 : 200,
       menuHeight: 200,
       initialSelection: widget.list.first,
       hintText: '입력해 주세요.',

@@ -32,7 +32,7 @@ class MyList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: isWeb ? 500 : 400,
+              width: isWeb ? 500 : 300,
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Column(
                 children: [
@@ -58,8 +58,8 @@ class MyList extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(width: 20,),
-            Container(
+            if (isWeb) SizedBox(width: 20),
+            if (isWeb) Container(
               width: 240,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

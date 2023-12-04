@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
 import 'package:flutter1/widgets/drop_down_menu.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 
 
 class ListAddModal extends StatefulWidget {
@@ -63,12 +64,14 @@ class _ListAddModalState extends State<ListAddModal> {
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 700 ? true : false;
 
     return AlertDialog(
       content: Container(
         margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
-          width: 320,
+          width: isWeb ? 320 : 200,
           height: 380,
           child: Column(
             children: [
@@ -101,38 +104,12 @@ class _ListAddModalState extends State<ListAddModal> {
                       MyDropDownMenu(name: type, list: list),
                       SizedBox(height: 10),
                       MyTextFormField(name: title, label: '제목', validator: '제목을 입력해 주세요.', obscure: false),
-                      SizedBox(height: 10),
                       MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
                     ],
                   ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton.icon(
-                  onPressed: _isLoading ? null : () {
-                    if (formKey.currentState!.validate()) {
-                      setState(() => _isLoading = true);
-                      callAPI();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(16.0),
-                    backgroundColor: Color.fromRGBO(65, 105, 225, 1),
-                  ),
-                  icon: _isLoading ? Container(
-                    width: 24,
-                    height: 24,
-                    padding: EdgeInsets.all(2.0),
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 3,
-                    ),
-                  ) : Icon(Icons.check),
-                  label: Text('생성하기'),
-                ),
-              ),
+              MyElevatedButtonIcon(label: '생성하기', function: callAPI, form: formKey),
             ],
           ),
         ),

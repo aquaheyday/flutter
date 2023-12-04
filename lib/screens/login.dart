@@ -270,7 +270,7 @@ class _LoginFormState extends State<LoginForm> {
             if (loginKey == 1)
               Container(
                 width: isWeb ? 132 : 99,
-                  height: isWeb ? 50 : 40,
+                height: 50,
                 child: Center(
                   child: Text('ID 로그인'),
                 )
@@ -287,7 +287,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 child: Container(
                   width: isWeb ? 132 : 99,
-                  height: isWeb ? 50 : 40,
+                  height: 50,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(
@@ -305,7 +305,7 @@ class _LoginFormState extends State<LoginForm> {
             if (loginKey == 2)
               Container(
                 width: isWeb ? 132 : 99,
-                height: isWeb ? 50 : 40,
+                height: 50,
                 decoration: BoxDecoration(
                   border: Border(
                     left: BorderSide(
@@ -330,7 +330,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 child: Container(
                   width: isWeb ? 132 : 99,
-                  height: isWeb ? 50 : 40,
+                  height: 50,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(
@@ -352,7 +352,7 @@ class _LoginFormState extends State<LoginForm> {
             if (loginKey == 3)
               Container(
                 width: isWeb ? 132 : 99,
-                height: isWeb ? 50 : 40,
+                height: 50,
                 decoration: BoxDecoration(
                   border: Border(
                     left: BorderSide(
@@ -377,7 +377,7 @@ class _LoginFormState extends State<LoginForm> {
                 },
                 child: Container(
                   width: isWeb ? 132 : 99,
-                  height: isWeb ? 50 : 40,
+                  height: 50,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(
