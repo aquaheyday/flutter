@@ -9,11 +9,13 @@ import 'package:flutter1/widgets/text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class Login extends StatelessWidget {
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 700 ? true : false;
 
     return MaterialApp(
       theme: ThemeData(
@@ -41,7 +43,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               Container(
-                width: 400,
+                width: isWeb ? 400 : 300,
                 height: 366,
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 decoration: BoxDecoration(
@@ -50,7 +52,7 @@ class Home extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
-                child: Login(),
+                child: LoginForm(),
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 40),
@@ -194,14 +196,14 @@ class Home extends StatelessWidget {
   }
 }
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
 
   TextEditingController email = TextEditingController();
@@ -257,6 +259,9 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var pageWidth = MediaQuery.of(context).size.width;
+    var isWeb = pageWidth > 700 ? true : false;
+
     return Column(
       children: [
         Row(
@@ -264,8 +269,8 @@ class _LoginState extends State<Login> {
           children: [
             if (loginKey == 1)
               Container(
-                width: 132,
-                height: 50,
+                width: isWeb ? 132 : 99,
+                  height: isWeb ? 50 : 40,
                 child: Center(
                   child: Text('ID 로그인'),
                 )
@@ -281,8 +286,8 @@ class _LoginState extends State<Login> {
                   });
                 },
                 child: Container(
-                  width: 132,
-                  height: 50,
+                  width: isWeb ? 132 : 99,
+                  height: isWeb ? 50 : 40,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(
@@ -299,8 +304,8 @@ class _LoginState extends State<Login> {
               ),
             if (loginKey == 2)
               Container(
-                width: 132,
-                height: 50,
+                width: isWeb ? 132 : 99,
+                height: isWeb ? 50 : 40,
                 decoration: BoxDecoration(
                   border: Border(
                     left: BorderSide(
@@ -324,8 +329,8 @@ class _LoginState extends State<Login> {
                   });
                 },
                 child: Container(
-                  width: 132,
-                  height: 50,
+                  width: isWeb ? 132 : 99,
+                  height: isWeb ? 50 : 40,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(
@@ -346,8 +351,8 @@ class _LoginState extends State<Login> {
               ),
             if (loginKey == 3)
               Container(
-                width: 132,
-                height: 50,
+                width: isWeb ? 132 : 99,
+                height: isWeb ? 50 : 40,
                 decoration: BoxDecoration(
                   border: Border(
                     left: BorderSide(
@@ -371,8 +376,8 @@ class _LoginState extends State<Login> {
                   });
                 },
                 child: Container(
-                  width: 132,
-                  height: 50,
+                  width: isWeb ? 132 : 99,
+                  height: isWeb ? 50 : 40,
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(240, 240, 240, 1),
                     border: Border(

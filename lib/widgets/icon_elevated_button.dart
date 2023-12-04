@@ -21,7 +21,6 @@ class _MyElevatedButtonIconState extends State<MyElevatedButtonIcon> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.form);
     return SizedBox(
       width: double.infinity,
       height: 40,

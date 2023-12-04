@@ -9,7 +9,7 @@ class router {
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => Home(),
+          builder: (context, state) => Login(),
         ),
         GoRoute(
           path: '/list',
