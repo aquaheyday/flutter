@@ -20,7 +20,10 @@ class MyList extends StatelessWidget {
     return MaterialApp(
       title: "고심: 목록",
       theme: ThemeData(
-          fontFamily: 'Pretendard'
+        fontFamily: 'Pretendard',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(65, 105, 225, 1),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -104,6 +107,7 @@ class MyList extends StatelessWidget {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color.fromRGBO(65, 105, 225, 1),
           onPressed: () {
             showDialog(
               barrierDismissible: false,
@@ -139,7 +143,7 @@ class MyMainListState extends State<MyMainList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -161,7 +165,7 @@ class MyMainListState extends State<MyMainList> {
 
   _RoomInApi(token) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + token),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -205,6 +209,7 @@ class MyMainListState extends State<MyMainList> {
           Container(
             margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
             child: TabBar(
+              indicatorColor: Color.fromRGBO(65, 105, 225, 1),
               labelColor: Colors.black,
               tabs: [
                 Tab(
@@ -222,7 +227,7 @@ class MyMainListState extends State<MyMainList> {
           Expanded(
             child: Stack(
               children: [
-                if (loading) Center( child: CircularProgressIndicator(),),
+                if (loading) Center( child: CircularProgressIndicator(color: Color.fromRGBO(65, 105, 225, 1),),),
                 TabBarView(
                   children: [
                     Container(
@@ -249,7 +254,7 @@ class MyMainListState extends State<MyMainList> {
                                       width: 50,
                                       child: IconButton(
                                         tooltip: "입장",
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(65, 105, 225, 1),
                                         padding: EdgeInsets.zero,
                                         constraints: BoxConstraints(),
                                         onPressed: () {
@@ -468,7 +473,7 @@ class _DeleteButtonState extends State<DeleteButton> {
 
   RoomDeleteApi(BuildContext context, token) async {
     await http.delete(
-      Uri.parse('https://goseam.com/api/room/' + token),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -568,7 +573,7 @@ class _InButtonState extends State<InButton> {
 
   callAPI(token) async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/' + token),
+      Uri.parse('http://localhost/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -649,7 +654,10 @@ class _InButtonState extends State<InButton> {
                       callAPI(widget.token);
                     }
                   },
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(16.0),
+                    backgroundColor: Color.fromRGBO(65, 105, 225, 1),
+                  ),
                   icon: _isLoading ? Container(
                     width: 24,
                     height: 24,
@@ -689,7 +697,7 @@ class MyPieChartState extends State {
 
   _aApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/chart'),
+      Uri.parse('http://localhost/api/room/chart'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -723,6 +731,7 @@ class MyPieChartState extends State {
         children: [
           Container(
             child: TabBar(
+              indicatorColor: Color.fromRGBO(65, 105, 225, 1),
               labelColor: Colors.black,
               tabs: [
                 Tab(
@@ -959,7 +968,7 @@ class _MyTopListState extends State<MyTopList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/room/top'),
+      Uri.parse('http://localhost/api/room/top'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -993,8 +1002,8 @@ class _MyTopListState extends State<MyTopList> {
       child: Column(
         children: [
           Container(
-            //margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
             child: TabBar(
+              indicatorColor: Color.fromRGBO(65, 105, 225, 1),
               labelColor: Colors.black,
               tabs: [
                 Tab(
@@ -1009,7 +1018,7 @@ class _MyTopListState extends State<MyTopList> {
           Expanded(
             child: Stack(
               children: [
-                if (loading) Center( child: CircularProgressIndicator(),),
+                if (loading) Center( child: CircularProgressIndicator(color: Color.fromRGBO(65, 105, 225, 1),),),
                 TabBarView(
                   children: [
                     Column(

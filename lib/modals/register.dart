@@ -19,6 +19,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
+  TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController c_password = TextEditingController();
 
@@ -27,13 +28,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     if (formKey.currentState!.validate()) {
       var response = await http.post(
-        Uri.parse('https://goseam.com/api/register'),
+        Uri.parse('http://localhost/api/register'),
         headers: <String, String> {
           'Content-Type': 'application/json'
         },
         body: jsonEncode({
           'name': name.text,
           'email': email.text,
+          'number': number.text,
           'password': password.text,
           'c_password': c_password.text,
         }),
@@ -72,14 +74,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
         child: SizedBox(
-            width: 320,
-            height: 450,
+            width: 310,
+            height: 500,
             child: Column(
               children: [
                 SizedBox(
-                  height: 380,
+                  height: 440,
                   child: Form(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: formKey,
@@ -103,13 +105,11 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30),
-                        MyTextFormField(name: name, label: '이름', validator: '이름을 입력해 주세요.', obscure: false),
-                        SizedBox(height: 14),
-                        MyTextFormField(name: email, label: '이메일', validator: '이메일을 입력해 주세요.', obscure: false),
-                        SizedBox(height: 14),
+                        SizedBox(height: 40),
+                        MyTextFormField(name: name, label: '이름', validator: '이름을 입력해 주세요.'),
+                        MyTextFormField(name: number, label: '연락처', validator: '연락처를 입력해 주세요.'),
+                        MyTextFormField(name: email, label: '이메일', validator: '이메일을 입력해 주세요.'),
                         MyTextFormField(name: password, label: '비밀번호', validator: '비밀번호를 입력해 주세요.', obscure: true),
-                        SizedBox(height: 14),
                         MyTextFormField(name: c_password, label: '비밀번호 확인', validator: '비밀번호 확인을 입력해 주세요.', obscure: true),
                       ],
                     ),
@@ -125,7 +125,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         _CallRegister();
                       }
                     },
-                    style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.all(16.0),
+                      backgroundColor: Color.fromRGBO(65, 105, 225, 1),
+                    ),
                     icon: _isLoading ? Container(
                       width: 24,
                       height: 24,

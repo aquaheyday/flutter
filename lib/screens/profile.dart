@@ -15,7 +15,12 @@ class MyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Pretendard'),
+      theme: ThemeData(
+        fontFamily: 'Pretendard',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(65, 105, 225, 1),
+        ),
+      ),
       title: "고심: 내정보",
       home: Scaffold(
         appBar: MyAppBar(),
@@ -69,7 +74,7 @@ class _MyInfoState extends State<MyInfo> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('https://goseam.com/api/user'),
+      Uri.parse('http://localhost/api/user'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -83,7 +88,7 @@ class _MyInfoState extends State<MyInfo> {
         Map<String, dynamic> map = jsonDecode(decodeBody);
         name = map["data"]["name"];
         email = map["data"]["email"];
-        image_url = "https://goseam.com" + map["data"]["image_path"].toString();
+        image_url = "http://localhost" + map["data"]["image_path"].toString();
         number = map["data"]["number"];
         total_count = map["data"]["total_count"].toString();
         pick_up_count = map["data"]["pick_up_count"].toString();
@@ -117,7 +122,7 @@ class _MyInfoState extends State<MyInfo> {
     if (result != null) {
       if (!result.files.single.bytes!.isEmpty) {
         var response = await http.put(
-          Uri.parse('https://goseam.com/api/user/image'),
+          Uri.parse('http://localhost/api/user/image'),
           headers: <String, String>{
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -131,7 +136,7 @@ class _MyInfoState extends State<MyInfo> {
           setState(() {
             var decodeBody = utf8.decode(response.bodyBytes);
             Map<String, dynamic> map = jsonDecode(decodeBody);
-            image_url = "https://goseam.com" + map['data'].toString();
+            image_url = "http://localhost" + map['data'].toString();
           });
         }
 
@@ -414,6 +419,7 @@ class _MyInfoState extends State<MyInfo> {
                           fit: BoxFit.fill,
                           child: Switch(
                             value: check,
+                            activeColor: Color.fromRGBO(65, 105, 225, 1),
                             onChanged: (value) {
                               setState(() {
                                 check = value;
@@ -455,6 +461,7 @@ class _MyInfoState extends State<MyInfo> {
                           fit: BoxFit.fill,
                           child: Switch(
                             value: check2,
+                            activeColor: Color.fromRGBO(65, 105, 225, 1),
                             onChanged: (value) {
                               setState(() {
                                 check2 = value;

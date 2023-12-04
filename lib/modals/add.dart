@@ -25,7 +25,7 @@ class _ListAddModalState extends State<ListAddModal> {
 
   callAPI() async {
     var response = await http.post(
-      Uri.parse('https://goseam.com/api/room'),
+      Uri.parse('http://localhost/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -117,7 +117,10 @@ class _ListAddModalState extends State<ListAddModal> {
                       callAPI();
                     }
                   },
-                  style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(16.0),
+                    backgroundColor: Color.fromRGBO(65, 105, 225, 1),
+                  ),
                   icon: _isLoading ? Container(
                     width: 24,
                     height: 24,

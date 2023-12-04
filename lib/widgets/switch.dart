@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MySwitch extends StatefulWidget {
-  const MySwitch({super.key});
+  MySwitch({
+    super.key,
+    required this.func,
+  });
+
+  final Function func;
 
   @override
   State<MySwitch> createState() => _MySwitchState();
@@ -13,9 +18,11 @@ class _MySwitchState extends State<MySwitch> {
   Widget build(BuildContext context) {
     return Switch(
       value: isChecked,
+      activeColor: Color.fromRGBO(65, 105, 225, 1),
       onChanged: (value) {
         setState(() {
           isChecked = value;
+          widget.func(value);
         });
       },
     );

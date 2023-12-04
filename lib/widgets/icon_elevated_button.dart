@@ -1,41 +1,52 @@
 import 'package:flutter/material.dart';
 
-class MyIconElevatedButton extends StatefulWidget {
-  const MyIconElevatedButton({
+class MyElevatedButtonIcon extends StatefulWidget {
+  const MyElevatedButtonIcon({
     super.key,
-    required this.text,
+    required this.label,
     required this.function,
+    this.form,
   });
 
-  final String text;
+  final String label;
   final Function function;
+  final form;
 
   @override
-  State<MyIconElevatedButton> createState() => _MyIconElevatedButtonState();
+  State<MyElevatedButtonIcon> createState() => _MyElevatedButtonIconState();
 }
 
-class _MyIconElevatedButtonState extends State<MyIconElevatedButton> {
-  bool _isLoading = false;
+class _MyElevatedButtonIconState extends State<MyElevatedButtonIcon> {
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      onPressed: _isLoading ? null : () {
-        setState(() => _isLoading = true);
-        widget.function();
-      },
-      style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
-      icon: _isLoading ? Container(
-        width: 24,
-        height: 24,
-        padding: EdgeInsets.all(2.0),
-        child: CircularProgressIndicator(
-          color: Colors.white,
-          strokeWidth: 3,
+    print(widget.form);
+    return SizedBox(
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton.icon(
+        onPressed: _loading ? null : () {
+          if (widget.form == null || widget.form.currentState!.validate()) {
+            setState(() => _loading = true);
+            widget.function().then((id) => setState(() => _loading = false));
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          backgroundColor: Color.fromRGBO(65, 105, 225, 1),
         ),
-      ) : Icon(Icons.check),
-      label: Text(widget.text),
+        icon: _loading ? Container(
+          width: 24,
+          height: 24,
+          padding: EdgeInsets.all(2.0),
+          child: CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 3,
+          ),
+        ) : Icon(Icons.check),
+        label: Text(widget.label),
+      ),
     );
-
   }
 }

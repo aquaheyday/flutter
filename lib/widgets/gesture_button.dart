@@ -37,7 +37,7 @@ class _MyGestureButtonState extends State<MyGestureButton> with AutomaticKeepAli
               width: widget.width,
               height: 40,
               decoration: BoxDecoration(
-                color: _target == item ? Colors.blue : null,
+                color: _target == item ? Color.fromRGBO(65, 105, 225, 1) : null,
                 border: Border.all(
                   color: Colors.grey,
                 ),

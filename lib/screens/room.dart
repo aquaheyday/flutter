@@ -32,7 +32,7 @@ class _RoomState extends State<Room> {
   callAPI(token) async {
     if (token != '') {
       var response = await http.get(
-        Uri.parse('https://goseam.com/api/order/' + token),
+        Uri.parse('http://localhost/api/order/' + token),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -59,7 +59,7 @@ class _RoomState extends State<Room> {
   deleteApi(id) async {
     if (id != '') {
       var response = await http.delete(
-        Uri.parse('https://goseam.com/api/order/' + id),
+        Uri.parse('http://localhost/api/order/' + id),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -100,7 +100,12 @@ class _RoomState extends State<Room> {
     //var isWeb = pageWidth > 800 ? true : false;
 
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Pretendard'),
+      theme: ThemeData(
+        fontFamily: 'Pretendard',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromRGBO(65, 105, 225, 1),
+        ),
+      ),
       title: "고심" + (room.length > 0 ? ": " + room[0]['title'].toString() : ""),
       home: Scaffold(
         appBar: MyAppBar(),
@@ -150,6 +155,7 @@ class _RoomState extends State<Room> {
                     ),
                     Container(
                       child: TabBar(
+                        indicatorColor: Color.fromRGBO(65, 105, 225, 1),
                         labelColor: Colors.black,
                         tabs: [
                           Tab(
@@ -171,7 +177,7 @@ class _RoomState extends State<Room> {
                                 Container(
                                   height: 50,
                                   child: Card(
-                                    color: Colors.blueAccent,
+                                    color: Color.fromRGBO(65, 105, 225, 1),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
@@ -232,7 +238,7 @@ class _RoomState extends State<Room> {
                                                         ),
                                                         image: DecorationImage(
                                                           fit: BoxFit.cover,
-                                                          image: NetworkImage('https://goseam.com' + user[index]['image_path'].toString()),
+                                                          image: NetworkImage('http://localhost' + user[index]['image_path'].toString()),
                                                         ),
                                                       ),
                                                     ),
@@ -241,7 +247,7 @@ class _RoomState extends State<Room> {
                                                       user[index]['name'],
                                                       style: TextStyle(
                                                         fontSize: 14,
-                                                        color: Colors.blue,
+                                                        color: Color.fromRGBO(65, 105, 225, 1),
                                                       ),
                                                     )
                                                     else Text(
@@ -351,7 +357,7 @@ class _RoomState extends State<Room> {
                                 Container(
                                   height: 50,
                                   child: Card(
-                                    color: Colors.blueAccent,
+                                    color: Color.fromRGBO(65, 105, 225, 1),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
@@ -500,7 +506,7 @@ class _RoomState extends State<Room> {
                                           ),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: NetworkImage('https://goseam.com' + user[i]['image_path'].toString()),
+                                            image: NetworkImage('http://localhost' + user[i]['image_path'].toString()),
                                           ),
                                         ),
                                       ),
@@ -531,6 +537,7 @@ class _RoomState extends State<Room> {
             ) else
               if (create_yn == 'Y')
                 if (end_yn == 'Y') FloatingActionButton(
+                  backgroundColor: Color.fromRGBO(65, 105, 225, 1),
                   onPressed: () {
                     showDialog(
                         barrierDismissible: false,
@@ -543,6 +550,7 @@ class _RoomState extends State<Room> {
                   tooltip: '오픈 하기',
                   child: Icon(Icons.open_in_new),
                 ) else FloatingActionButton(
+                  backgroundColor: Color.fromRGBO(65, 105, 225, 1),
                   onPressed: () {
                     showDialog(
                         barrierDismissible: false,
@@ -560,6 +568,7 @@ class _RoomState extends State<Room> {
             ),
             if (!loading && end_yn == 'N')
             FloatingActionButton(
+              backgroundColor: Color.fromRGBO(65, 105, 225, 1),
               onPressed: () {
                 showDialog(
                   barrierDismissible: false,

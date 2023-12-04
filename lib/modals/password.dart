@@ -29,7 +29,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
   callAPI() async {
     if (widget.type == 'in') {
       var response = await http.get(
-        Uri.parse('https://goseam.com/api/room/' + widget.id.toString()),
+        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -41,7 +41,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
       }
     } else {
       var response = await http.delete(
-        Uri.parse('https://goseam.com/api/room/' + widget.id.toString()),
+        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -97,11 +97,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 40,
-                child: MyIconElevatedButton(text: widget.type == 'in' ? '입장 하기' : '삭제 하기', function: callAPI),
-              ),
+              MyElevatedButtonIcon(label: widget.type == 'in' ? '입장 하기' : '삭제 하기', function: callAPI),
             ],
           ),
         ),

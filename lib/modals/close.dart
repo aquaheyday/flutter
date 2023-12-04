@@ -24,7 +24,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('https://goseam.com/api/room/' + widget.token.toString() + '/end'),
+      Uri.parse('http://localhost/api/room/' + widget.token.toString() + '/end'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -77,11 +77,7 @@ class _ListCloseModalState extends State<ListCloseModal> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: MyIconElevatedButton(text: '마감하기', function: callAPI),
-              ),
+              MyElevatedButtonIcon(label: '마감하기', function: callAPI),
             ],
           ),
         ),

@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter1/widgets/text_form_field.dart';
+import 'package:flutter1/widgets/icon_elevated_button.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class FindEmailModal extends StatefulWidget {
-  const FindEmailModal({super.key});
+class FindModal extends StatefulWidget {
+  const FindModal({
+    super.key,
+    required this.label,
+  });
+
+  final String label;
 
   @override
-  State<FindEmailModal> createState() => _FindEmailModalState();
+  State<FindModal> createState() => _FindModalState();
 }
 
-class _FindEmailModalState extends State<FindEmailModal> {
-  bool _isLoading = false;
+class _FindModalState extends State<FindModal> {
   bool _emailCheck = false;
   String email = "조회된 이메일이 없습니다.";
 
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   TextEditingController number = TextEditingController();
 
-  _emailApi() async {
+  callApi() async {
     var response = await http.post(
       Uri.parse('http://localhost/api/eamil'),
       headers: <String, String> {
@@ -51,26 +56,23 @@ class _FindEmailModalState extends State<FindEmailModal> {
         );
       }
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+        margin: const EdgeInsets.fromLTRB(40, 20, 40, 0),
         child: SizedBox(
-          width: 310,
-          height: 220,
+          width: 320,
+          height: 210,
           child: Column(
             children: [
               SizedBox(
-                height: 160,
+                height: 150,
                 child: Form(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     children: [
                       Row(
@@ -91,20 +93,17 @@ class _FindEmailModalState extends State<FindEmailModal> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 40),
-                      if (_emailCheck)
-                        Container(
-                          margin: EdgeInsets.only(top: 18),
-                          child: Text(email),
-                        )
-                      else
-                        MyTextFormField(name: number, label: '연락처', validator: '연락처를 입력해 주세요.', obscure: false),
+                      SizedBox(height: 30),
+                      if (_emailCheck) Container(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Text(email),
+                      )
+                      else MyTextFormField(name: number, label: '연락처', validator: '연락처를 입력해 주세요.'),
                     ],
                   ),
                 ),
               ),
-              if (_emailCheck)
-                Container(
+              if (_emailCheck) SizedBox(
                   width: double.infinity,
                   height: 40,
                   child: ElevatedButton(
@@ -112,39 +111,14 @@ class _FindEmailModalState extends State<FindEmailModal> {
                         setState(() => _emailCheck = false);
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       backgroundColor: Color.fromRGBO(65, 105, 225, 1),
                     ),
                     child: Text('재조회하기'),
                   )
-                )
+              )
               else
-                Container(
-                  width: double.infinity,
-                  height: 40,
-                  child: ElevatedButton.icon(
-                    onPressed: _isLoading ? null : () {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() => _isLoading = true);
-                        _emailApi();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(16.0),
-                      backgroundColor: Color.fromRGBO(65, 105, 225, 1),
-                    ),
-                    icon: _isLoading ? Container(
-                      width: 24,
-                      height: 24,
-                      padding: EdgeInsets.all(2.0),
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 3,
-                      ),
-                    ) : Icon(Icons.check),
-                    label: Text('조회하기'),
-                  ),
-                )
+              MyElevatedButtonIcon(label: "조회하기", function: callApi, form: formKey),
             ],
           ),
         ),

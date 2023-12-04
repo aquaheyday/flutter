@@ -24,7 +24,7 @@ class _ListOpenModalState extends State<ListOpenModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('https://goseam.com/api/room/' + widget.token.toString() + '/open'),
+      Uri.parse('http://localhost/api/room/' + widget.token.toString() + '/open'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -77,11 +77,7 @@ class _ListOpenModalState extends State<ListOpenModal> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: MyIconElevatedButton(text: '오픈하기', function: callAPI),
-              ),
+              MyElevatedButtonIcon(label: '오픈하기', function: callAPI),
             ],
           ),
         ),
