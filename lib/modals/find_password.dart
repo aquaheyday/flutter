@@ -20,7 +20,7 @@ class _FindPasswordModalState extends State<FindPasswordModal> {
 
   _test() async {
     var response = await http.post(
-      Uri.parse('http://localhost/api/password'),
+      Uri.parse('https://goseam.com/api/password'),
       headers: <String, String> {
         'Content-Type': 'application/json'
       },

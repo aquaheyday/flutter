@@ -32,7 +32,7 @@ class _RoomState extends State<Room> {
   callAPI(token) async {
     if (token != '') {
       var response = await http.get(
-        Uri.parse('http://localhost/api/order/' + token),
+        Uri.parse('https://goseam.com/api/order/' + token),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -59,7 +59,7 @@ class _RoomState extends State<Room> {
   deleteApi(id) async {
     if (id != '') {
       var response = await http.delete(
-        Uri.parse('http://localhost/api/order/' + id),
+        Uri.parse('https://goseam.com/api/order/' + id),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -238,7 +238,7 @@ class _RoomState extends State<Room> {
                                                         ),
                                                         image: DecorationImage(
                                                           fit: BoxFit.cover,
-                                                          image: NetworkImage('http://localhost' + user[index]['image_path'].toString()),
+                                                          image: NetworkImage('https://goseam.com' + user[index]['image_path'].toString()),
                                                         ),
                                                       ),
                                                     ),
@@ -506,7 +506,7 @@ class _RoomState extends State<Room> {
                                           ),
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: NetworkImage('http://localhost' + user[i]['image_path'].toString()),
+                                            image: NetworkImage('https://goseam.com' + user[i]['image_path'].toString()),
                                           ),
                                         ),
                                       ),

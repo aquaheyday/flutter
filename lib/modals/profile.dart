@@ -27,7 +27,7 @@ class _ProfileModalState extends State<ProfileModal> {
 
   callAPI() async {
     var response = await http.put(
-      Uri.parse('http://localhost/api/user/' + widget.type),
+      Uri.parse('https://goseam.com/api/user/' + widget.type),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

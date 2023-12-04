@@ -29,7 +29,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
   callAPI() async {
     if (widget.type == 'in') {
       var response = await http.get(
-        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
+        Uri.parse('https://goseam.com/api/room/' + widget.id.toString()),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -41,7 +41,7 @@ class _ListPasswordModalState extends State<ListPasswordModal> {
       }
     } else {
       var response = await http.delete(
-        Uri.parse('http://localhost/api/room/' + widget.id.toString()),
+        Uri.parse('https://goseam.com/api/room/' + widget.id.toString()),
         headers: <String, String>{
           'Accept': 'application/json',
           'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

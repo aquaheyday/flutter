@@ -143,7 +143,7 @@ class MyMainListState extends State<MyMainList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room'),
+      Uri.parse('https://goseam.com/api/room'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -165,7 +165,7 @@ class MyMainListState extends State<MyMainList> {
 
   _RoomInApi(token) async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/' + token),
+      Uri.parse('https://goseam.com/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -473,7 +473,7 @@ class _DeleteButtonState extends State<DeleteButton> {
 
   RoomDeleteApi(BuildContext context, token) async {
     await http.delete(
-      Uri.parse('http://localhost/api/room/' + token),
+      Uri.parse('https://goseam.com/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -573,7 +573,7 @@ class _InButtonState extends State<InButton> {
 
   callAPI(token) async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/' + token),
+      Uri.parse('https://goseam.com/api/room/' + token),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -697,7 +697,7 @@ class MyPieChartState extends State {
 
   _aApi() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/chart'),
+      Uri.parse('https://goseam.com/api/room/chart'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),
@@ -968,7 +968,7 @@ class _MyTopListState extends State<MyTopList> {
 
   _ListApi() async {
     var response = await http.get(
-      Uri.parse('http://localhost/api/room/top'),
+      Uri.parse('https://goseam.com/api/room/top'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + window.localStorage['tkn'].toString(),

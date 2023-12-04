@@ -216,7 +216,7 @@ class _LoginState extends State<Login> {
 
   loginApi() async {
     var response = await http.post(
-      Uri.parse('http://localhost/api/login'),
+      Uri.parse('https://goseam.com/api/login'),
       headers: <String, String> {
         'Content-Type': 'application/json'
       },
