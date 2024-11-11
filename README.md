@@ -1,21 +1,3 @@
-### 로그인
-<img src="https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4"  width="400"/>
-
-### 회원가입
-<img src="https://github.com/user-attachments/assets/12b4110f-775e-48df-837b-f669ede51c00"  width="400"/>
-
-### 비밀번호찾기
-<img src="https://github.com/user-attachments/assets/f0aa437b-fea4-40f9-b634-31721f736586"  width="400"/>
-
-### 이용약관 & 개인정보처리방침
-<img src="https://github.com/user-attachments/assets/7e035724-3e7e-4036-8a24-e10d1e743825"  width="400"/>
-
-### 방생성
-<img src="https://github.com/user-attachments/assets/d8d3c192-f965-4d83-9733-4ebbbb5cc2e0"  width="500"/>
-
-### 주문하기
-<img src=""  width="500"/>
-
 #### 개요
 사내 문화 개선 프로젝트
 막내의 커피 심부름 문화를 개선하여 여러 팀원들이 소통할 수 있는 장을 마련하여 보다 돈독한 팀관계 형성을 목적으로 한 프로젝트
@@ -38,3 +20,34 @@
 |:--:|:--:|:--:
 |web|nginx|1.25.1
 |web|flutter|3.16.2
+
+### 로그인
+<img src="https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4"  width="400"/>
+
+### 회원가입
+<img src="https://github.com/user-attachments/assets/12b4110f-775e-48df-837b-f669ede51c00"  width="400"/>
+
+### 비밀번호찾기
+<img src="https://github.com/user-attachments/assets/f0aa437b-fea4-40f9-b634-31721f736586"  width="400"/>
+
+### 이용약관 & 개인정보처리방침
+<img src="https://github.com/user-attachments/assets/7e035724-3e7e-4036-8a24-e10d1e743825"  width="400"/>
+
+### 방생성
+<img src="https://github.com/user-attachments/assets/d8d3c192-f965-4d83-9733-4ebbbb5cc2e0"  width="500"/>
+
+### 방목록 전환
+<img src="https://github.com/user-attachments/assets/01c0c56b-8521-4ae9-8451-e6f6cfbe828d"  width="500"/>
+
+### 방입장
+<img src="https://github.com/user-attachments/assets/c43dc925-12f9-4ded-a537-6fdf57c8b1ed"  width="500"/>
+
+### 주문하기
+<img src="https://github.com/user-attachments/assets/83e13794-ae67-4c3b-9d8b-23355d2cbe76"  width="500"/>
+
+### 주문마감 & 주문오픈
+<img src="https://github.com/user-attachments/assets/86d61a57-8102-460b-8e25-85340aece517"  width="500"/>
+
+### 내정보 수정
+<img src="https://github.com/user-attachments/assets/3ad7d10e-4fa6-4a8d-bc44-97f4c27f4930"  width="500"/>
+
