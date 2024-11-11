@@ -22,12 +22,17 @@
 |web|flutter|3.16.2
 
 ### 로그인
+- flutter에서 이메일, 비밀번호의 유효성검사를 합니다
+- Api 서버에 로그인 요청을 하여 token을 발급받아 로그인 세션을 유지합니다.
 <img src="https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4"  width="400"/>
 
 ### 회원가입
+- fluuter에서 회원정보의 유효성검사를 합니다.
+- Api 서버에서 계정 중복 확인 후 회원가입 처리 및 로그인 token을 발급합니다.
 <img src="https://github.com/user-attachments/assets/12b4110f-775e-48df-837b-f669ede51c00"  width="400"/>
 
 ### 비밀번호찾기
+- 이메일을 이용하여 비밀번호를 재발급받습니다.
 <img src="https://github.com/user-attachments/assets/f0aa437b-fea4-40f9-b634-31721f736586"  width="400"/>
 
 ### 이용약관 & 개인정보처리방침
@@ -43,9 +48,12 @@
 <img src="https://github.com/user-attachments/assets/c43dc925-12f9-4ded-a537-6fdf57c8b1ed"  width="500"/>
 
 ### 주문하기
+- 메인과 서브로 주문이 가능하며, 메인메뉴가 품절일때, 서브메뉴를 확인하여 주문할 수 있습니다. 
 <img src="https://github.com/user-attachments/assets/83e13794-ae67-4c3b-9d8b-23355d2cbe76"  width="500"/>
 
 ### 주문마감 & 주문오픈
+- 주문 마감시 주문자 리스트중 랜덤으로 배달원이 배정됩니다.
+- 마감된 주문방에서 재오픈시 추가 주문을 받을 수 있습니다.
 <img src="https://github.com/user-attachments/assets/86d61a57-8102-460b-8e25-85340aece517"  width="500"/>
 
 ### 내정보 수정
