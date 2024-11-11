@@ -1,7 +1,21 @@
 ### 로그인
 <img src="https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4"  width="400"/>
 
-### 
+### 회원가입
+<img src="https://github.com/user-attachments/assets/12b4110f-775e-48df-837b-f669ede51c00"  width="400"/>
+
+### 비밀번호찾기
+<img src="https://github.com/user-attachments/assets/f0aa437b-fea4-40f9-b634-31721f736586"  width="400"/>
+
+### 이용약관 & 개인정보처리방침
+<img src="https://github.com/user-attachments/assets/7e035724-3e7e-4036-8a24-e10d1e743825"  width="400"/>
+
+### 방생성
+<img src="https://github.com/user-attachments/assets/d8d3c192-f965-4d83-9733-4ebbbb5cc2e0"  width="500"/>
+
+### 주문하기
+<img src=""  width="500"/>
+
 #### 개요
 사내 문화 개선 프로젝트
 막내의 커피 심부름 문화를 개선하여 여러 팀원들이 소통할 수 있는 장을 마련하여 보다 돈독한 팀관계 형성을 목적으로 한 프로젝트
