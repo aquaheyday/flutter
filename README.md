@@ -1,6 +1,5 @@
 ### 로그인
-![Animation](https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4)
-
+<img src="https://github.com/user-attachments/assets/1d101960-90d6-4581-b913-91a34a080eb4.png  width="200" height="400"/>
 
 #### 개요
 사내 문화 개선 프로젝트
